@@ -1,0 +1,17 @@
+services:
+    essentials.listener.command_exception:
+        class: Druidvav\EssentialsBundle\EventListener\ConsoleExceptionListener
+        arguments: ['@logger']
+        tags:
+            - { name: kernel.event_listener, event: console.exception }
+    essentials.monolog.activation_strategy:
+        class: Druidvav\EssentialsBundle\Monolog\CustomActivationStrategy
+        calls:
+            - [setContainer, ['@service_container'] ]
+    essentials.twig.basic:
+        class:     Druidvav\EssentialsBundle\Twig\Basic
+        calls:
+            - [ setTranslator, [ "@translator" ] ]
+            - [ setKernel, [ "@kernel" ] ]
+        tags:
+            - { name: twig.extension }

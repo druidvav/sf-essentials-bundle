@@ -54,7 +54,19 @@ class Basic extends Twig_Extension
             new Twig_SimpleFunction('array_print', array($this, 'arrayPrint')),
             new Twig_SimpleFunction('grunt_asset', array($this, 'gruntAsset')),
             new Twig_SimpleFunction('cdn_asset', array($this, 'cdnAsset')),
+            new Twig_SimpleFunction('get_locale', array($this, 'getLocale')),
+            new Twig_SimpleFunction('is_locale', array($this, 'isLocale')),
         );
+    }
+
+    public function getLocale()
+    {
+        return $this->translator->getLocale();
+    }
+
+    public function isLocale($locale)
+    {
+        return $this->translator->getLocale() == $locale;
     }
 
     public function formatDateInterval($date, $format = '')

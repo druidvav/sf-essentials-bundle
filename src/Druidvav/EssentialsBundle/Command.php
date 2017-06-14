@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class Command extends BaseCommand
+abstract class Command extends BaseCommand
 {
     protected function checkRunning($command)
     {

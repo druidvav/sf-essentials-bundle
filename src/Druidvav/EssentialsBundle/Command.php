@@ -15,13 +15,13 @@ abstract class Command extends BaseCommand
 {
     protected function checkRunning($command)
     {
-        $process = new Process('ps aux | grep "console ' . $command . ' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
+        $process = new Process('ps auxww | grep "console ' . $command . ' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
         $process->start();
         while ($process->isRunning()) {
             // waiting for process to finish
         }
         if (intval($process->getOutput()) > 1) {
-            $this->getContainer()->get('monolog.logger.console')->critical($command . ' is already running');
+            $this->getContainer()->get('monolog.logger.console')->info($command . ' is already running');
             exit;
         }
     }

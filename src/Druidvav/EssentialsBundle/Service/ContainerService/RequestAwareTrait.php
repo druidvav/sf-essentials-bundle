@@ -16,7 +16,7 @@ trait RequestAwareTrait
     /**
      * Shortcut to return the request service.
      *
-     * @deprecated 
+     * @deprecated
      * @return Request
      */
     public function getRequest()

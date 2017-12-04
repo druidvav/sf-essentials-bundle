@@ -1,9 +1,9 @@
 services:
     essentials.listener.command_exception:
-        class: Druidvav\EssentialsBundle\EventListener\ConsoleExceptionListener
+        class: Druidvav\EssentialsBundle\EventListener\ConsoleErrorListener
         arguments: ['@logger']
         tags:
-            - { name: kernel.event_listener, event: console.exception }
+            - { name: kernel.event_listener, event: console.error }
     essentials.monolog.activation_strategy:
         class: Druidvav\EssentialsBundle\Monolog\CustomActivationStrategy
         calls:

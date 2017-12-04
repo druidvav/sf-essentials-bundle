@@ -6,7 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class ContainerService
+abstract class ContainerService implements ContainerInterface
 {
     use ContainerAwareTrait;
 
@@ -22,9 +22,39 @@ abstract class ContainerService
         return $this->container;
     }
 
-    public function get($service)
+    public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
     {
-        return $this->container->get($service);
+        return $this->container->get($id, $invalidBehavior);
+    }
+
+    public function set($id, $service)
+    {
+        return $this->container->set($id, $service);
+    }
+
+    public function has($id)
+    {
+        return $this->container->has($id);
+    }
+
+    public function initialized($id)
+    {
+        return $this->container->initialized($id);
+    }
+
+    public function getParameter($name)
+    {
+        return $this->container->getParameter($name);
+    }
+
+    public function hasParameter($name)
+    {
+        return $this->container->hasParameter($name);
+    }
+
+    public function setParameter($name, $value)
+    {
+        return $this->container->setParameter($name, $value);
     }
 
     /**

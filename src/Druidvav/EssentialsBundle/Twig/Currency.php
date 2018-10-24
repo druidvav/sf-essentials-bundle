@@ -2,17 +2,17 @@
 
 namespace Druidvav\EssentialsBundle\Twig;
 
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig\TwigFilter;
 
 class Currency extends \Twig_Extension
 {
+    /**
+     * @var TranslatorInterface $translator
+     */
     private $translator;
 
-    /**
-     * @param Translator $translator
-     */
-    public function __construct(Translator $translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }

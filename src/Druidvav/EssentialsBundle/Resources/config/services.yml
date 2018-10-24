@@ -9,9 +9,13 @@ services:
         calls:
             - [setContainer, ['@service_container'] ]
     essentials.twig.basic:
-        class:     Druidvav\EssentialsBundle\Twig\Basic
+        class: Druidvav\EssentialsBundle\Twig\Basic
         calls:
             - [ setTranslator, [ "@translator" ] ]
             - [ setKernel, [ "@kernel" ] ]
-        tags:
-            - { name: twig.extension }
+        tags: [ "twig.extension" ]
+    essentials.twig.currency:
+        class: Druidvav\EssentialsBundle\Twig\Currency
+        calls:
+            - [ setTranslator, [ "@translator" ] ]
+        tags: [ "twig.extension" ]

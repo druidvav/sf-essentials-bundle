@@ -1,7 +1,7 @@
 <?php
 namespace Druidvav\EssentialsBundle\Service\ContainerService;
 
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

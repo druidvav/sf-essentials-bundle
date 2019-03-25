@@ -3,7 +3,7 @@ namespace Druidvav\EssentialsBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class ContainerService implements ContainerInterface

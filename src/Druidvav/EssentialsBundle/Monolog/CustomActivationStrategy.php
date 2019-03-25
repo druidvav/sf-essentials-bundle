@@ -1,9 +1,9 @@
 <?php
 namespace Druidvav\EssentialsBundle\Monolog;
 
+use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use Monolog\Handler\FingersCrossed\ActivationStrategyInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Monolog\Logger;
 

@@ -8,52 +8,19 @@ namespace Druidvav\EssentialsBundle;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Druidvav\EssentialsBundle\Service\ContainerService\ContainerServiceTrait;
 use LogicException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand as BaseCommand;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Process;
 
-abstract class Command extends BaseCommand
+abstract class Command extends BaseCommand implements ContainerInterface
 {
-    /**
-     * In ControllerTrait there are lots of methods incompatible with Command, but we
-     * use it for PhpStorm autocomplete compatibility
-     */
-    use ControllerTrait;
+    use ContainerServiceTrait;
     use LoggerAwareTrait;
-
-    /**
-     * @param string $name The parameter name
-     * @return mixed
-     * @final
-     */
-    protected function getParameter($name)
-    {
-        return $this->getContainer()->getParameter($name);
-    }
-
-    /**
-     * @return Registry|object
-     * @throws LogicException If DoctrineBundle is not available
-     */
-    public function getDoctrine()
-    {
-        if (!$this->has('doctrine')) {
-            throw new LogicException('The DoctrineBundle is not registered in your application.');
-        }
-        return $this->get('doctrine');
-    }
-
-    /**
-     * @return ObjectManager|EntityManager|object
-     */
-    protected function getEm()
-    {
-        return $this->getDoctrine()->getManager();
-    }
 
     protected function checkRunning($command)
     {

@@ -9,6 +9,7 @@
   "require": {
     "php": ">=7.1.0",
     "ext-intl": "*",
+    "ext-zlib": "*",
     "symfony/translation": "~3.4",
     "symfony/framework-bundle": "~3.4",
     "symfony/twig-bundle": "~3.4",

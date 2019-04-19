@@ -3,12 +3,13 @@
  * @noinspection PhpInternalEntityUsedInspection
  * We'll assume that is internal library :)
  */
+/** @noinspection PhpUnusedParameterInspection */
+/** @noinspection PhpStatementHasEmptyBodyInspection */
 namespace Druidvav\EssentialsBundle;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Druidvav\EssentialsBundle\Service\ContainerService;
 use Druidvav\EssentialsBundle\Service\ContainerService\ContainerServiceTrait;
+use Exception;
 use LogicException;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -21,6 +22,41 @@ abstract class Command extends BaseCommand implements ContainerInterface
 {
     use ContainerServiceTrait;
     use LoggerAwareTrait;
+
+    public function get($id, $invalidBehavior = ContainerService::EXCEPTION_ON_INVALID_REFERENCE)
+    {
+        return $this->container->get($id, $invalidBehavior);
+    }
+
+    public function set($id, $service)
+    {
+        throw new LogicException('Not available here');
+    }
+
+    public function has($id)
+    {
+        return $this->container->has($id);
+    }
+
+    public function initialized($id)
+    {
+        return $this->container->initialized($id);
+    }
+
+    public function getParameter($name)
+    {
+        return $this->container->getParameter($name);
+    }
+
+    public function hasParameter($name)
+    {
+        return $this->container->hasParameter($name);
+    }
+
+    public function setParameter($name, $value)
+    {
+        throw new LogicException('Not available here');
+    }
 
     protected function checkRunning($command)
     {
@@ -35,6 +71,12 @@ abstract class Command extends BaseCommand implements ContainerInterface
         }
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param $task
+     * @throws Exception
+     */
     protected function executeTask(InputInterface $input, OutputInterface $output, $task)
     {
         $log = $this->getLogger();

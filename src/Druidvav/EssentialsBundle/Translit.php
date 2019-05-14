@@ -111,7 +111,7 @@ class Translit
         //$string = strtr($string, self::$_translitMixed);
         $string = strtr($string, self::$_translitBig);
         $string = strtr($string, self::$_translitSmall);
-        $string = str_replace([ 'ô', 'á', 'ó', 'ţ', 'õ', 'Å', '№' ], [ 'o', 'a', 'o', 't', 'o', 'A', ' ' ], $string);
+        $string = iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
         return $string;
     }
 }

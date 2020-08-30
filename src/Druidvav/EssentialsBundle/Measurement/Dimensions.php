@@ -96,4 +96,9 @@ class Dimensions
     {
         return $this->getLocalX() . 'x' . $this->getLocalY() . 'x' . $this->getLocalZ() . ' ' . $this->getSystem();
     }
+
+    public function getVolumeWeightG($k = 5000): int
+    {
+        return intval(($this->getMmX() * $this->getMmY() * $this->getMmZ()) / $k);
+    }
 }

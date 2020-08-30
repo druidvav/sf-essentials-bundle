@@ -73,10 +73,10 @@ class Dimensions
     public function getCmX() { return round($this->x / 10); }
     public function getLocalX() { return round($this->x / $this->k, 2); }
     public function getMmY() { return intval($this->y); }
-    public function getCmY() { return round($this->x / 10); }
+    public function getCmY() { return round($this->y / 10); }
     public function getLocalY() { return round($this->y / $this->k, 2); }
     public function getMmZ() { return intval($this->z); }
-    public function getCmZ() { return round($this->x / 10); }
+    public function getCmZ() { return round($this->z / 10); }
     public function getLocalZ() { return round($this->z / $this->k, 2); }
 
     public function getMaxLengthMm() { return max($this->getMmX(), $this->getMmY(), $this->getMmZ()); }

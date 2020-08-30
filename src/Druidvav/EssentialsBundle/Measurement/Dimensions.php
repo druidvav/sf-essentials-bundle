@@ -18,18 +18,25 @@ class Dimensions
     protected $y;
     protected $z;
 
-    public static function create($x, $y, $z, $system)
+    public static function create($x, $y, $z, $system): ?Dimensions
     {
         if (empty($x) || empty($y) || empty($z)) return null;
         return new self($x, $y, $z, $system);
     }
 
-    public static function createMm($x, $y, $z)
+    public static function createMm($x, $y, $z): ?Dimensions
     {
         if (empty($x) || empty($y) || empty($z)) return null;
         return new self($x, $y, $z, self::SYSTEM_MM);
     }
 
+    /**
+     * @param float $x
+     * @param float $y
+     * @param float $z
+     * @param string $system
+     * @throws DimensionsException
+     */
     public function __construct($x, $y, $z, $system = null)
     {
         $this->setSystem($system);

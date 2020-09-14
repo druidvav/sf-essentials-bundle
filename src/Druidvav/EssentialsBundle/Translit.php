@@ -8,29 +8,20 @@ class Translit
     const TR_ENCODE = 0;
     const TR_DECODE = 1;
 
-    protected static $_translitSmall = array(
+    const TRANSLITERATION_MAP = [
         // RUSSIAN
-        "а" => "a",  "б" => "b",  "в" => "v",  "г" => "g",   "д" => "d",   "е" => "e",  "ё" => "yo",
-        "ж" => "zh", "з" => "z",  "и" => "i",  "й" => "j", "к" => "k",  "л" => "l",  "м" => "m",   "н" => "n",   "о" => "o",  "п" => "p",
-        "р" => "r",  "с" => "s",  "т" => "t",  "у" => "u",  "ф" => "f",  "х" => "kh",  "ц" => "c",   "ч" => "ch",  "ш" => "sh", "щ" => "shh",
-        "ъ" => "''",  "ы" => "y",  "ь" => "'",  "э" => "e'", "ю" => "yu", "я" => "ya",
+        'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e', 'ж' => 'zh', 'з' => 'z',
+        'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ё' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
+        'и' => 'i', 'й' => 'i', 'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r',
+        'И' => 'I', 'Й' => 'I', 'К' => 'K', 'Л' => 'L', 'М' => 'M', 'Н' => 'N', 'О' => 'O', 'П' => 'P', 'Р' => 'R',
+        'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f', 'х' => 'kh', 'ц' => 'ts', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shch',
+        'С' => 'S', 'Т' => 'T', 'У' => 'U', 'Ф' => 'F', 'Х' => 'Kh', 'Ц' => 'Ts', 'Ч' => 'Ch', 'Ш' => 'Sh', 'Щ' => 'Shch',
+        'ъ' => 'ie', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'iu', 'я' => 'ia',
+        'Ъ' => 'Ie', 'Ы' => 'Y', 'Ь' => '', 'Э' => 'E', 'Ю' => 'Iu', 'Я' => 'Ia',
         // UKRAINE
-        "ё" => "yo",  "є" => "e'",  "і" => "i",  "ї" => "yi",  "ґ" => "g",  "ў" => "u",
-    );
-    protected static $_translitBig = array(
-        // RUSSIAN
-        "А" => "A",  "Б" => "B",  "В" => "V",  "Г" => "G",  "Д" => "D",  "Е" => "E",  "З" => "Z",  "И" => "I",  "Й" => "J",
-        "К" => "K",  "Л" => "L",  "М" => "M",  "Н" => "N",  "О" => "O",  "П" => "P",   "Р" => "R",   "С" => "S",  "Т" => "T",
-        "У" => "U",  "Ф" => "F",  "Ц" => "C",  "Ъ" => "''",  "Ы" => "Y",  "Ь" => "'",  "Э" => "E'",
-        // UKRAINE
-        "Є" => "E'",  "І" => "I",  "Ґ" => "G",  "Ў" => "U",
-    );
-    protected static $_translitMixed = array(
-        // RUSSIAN
-        "Ё" => "Yo", "Ж" => "Zh",  "Х" => "Kh", "Ч" => "Ch", "Ш" => "Sh", "Щ" => "Shh", "Ю" => "Yu", "Я" => "Ya",
-        // UKRAINE
-        "Ё" => "Yo",  "Ї" => "Yi",
-    );
+        'є' => 'ie', 'і' => 'i', 'ї' => 'i',  'ґ' => 'g', 'ў' => 'u',
+        'Є' => 'Ye', 'I' => 'I', 'Ї' => 'Yi', 'Ґ' => 'G', 'Ў' => 'U',
+    ];
 
     /**
      * Преобразует строку в транслит (URI валидный)
@@ -85,32 +76,7 @@ class Translit
 
     public static function text($string)
     {
-        foreach (self::$_translitMixed as $from => $to) {
-            while (($pos = mb_strpos($string, $from, 0, 'UTF-8')) !== false) {
-                $tempTo = $to;
-                $len = mb_strlen($string, 'UTF-8');
-                $left = '';
-                $right = '';
-                if ($pos < $len - 1) {
-                    $next = mb_substr($string, $pos+1, 1, 'UTF-8');
-                    if (array_key_exists($next, self::$_translitBig) || array_key_exists($next, self::$_translitMixed)) {
-                        $tempTo = mb_strtoupper($tempTo);
-                    }
-                    $right = mb_substr($string, $pos+1, $len, 'UTF-8');
-                }
-                if ($pos > 0) {
-                    $prev = mb_substr($string, $pos-1, 1, 'UTF-8');
-                    if (array_key_exists($prev, self::$_translitBig) || array_key_exists($prev, self::$_translitMixed)) {
-                        $tempTo = mb_strtoupper($tempTo);
-                    }
-                    $left = mb_substr($string, 0, $pos, 'UTF-8');
-                }
-                $string = $left . $tempTo . $right;
-            }
-        }
-        //$string = strtr($string, self::$_translitMixed);
-        $string = strtr($string, self::$_translitBig);
-        $string = strtr($string, self::$_translitSmall);
+        $string = strtr($string, self::TRANSLITERATION_MAP);
         $string = iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
         return $string;
     }

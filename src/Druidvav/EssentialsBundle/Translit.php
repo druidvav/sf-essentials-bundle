@@ -76,7 +76,14 @@ class Translit
 
     public static function text($string)
     {
-        $string = strtr($string, self::TRANSLITERATION_MAP);
+        foreach (self::TRANSLITERATION_MAP as $from => $to) {
+            if (mb_strlen($to) == 1 || $from != mb_strtoupper($from)) {
+                $string = str_replace($from, $to, $string);
+            } else {
+                $string = preg_replace('#' . $from . '(\p{Lu})#u', mb_strtoupper($to) . '$1', $string);
+                $string = str_replace($from, $to, $string);
+            }
+        }
         $string = iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
         return $string;
     }

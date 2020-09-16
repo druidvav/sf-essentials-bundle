@@ -81,6 +81,7 @@ class Translit
                 $string = str_replace($from, $to, $string);
             } else {
                 $string = preg_replace('#' . $from . '(\p{Lu})#u', mb_strtoupper($to) . '$1', $string);
+                $string = preg_replace('#(\p{Lu})' . $from . '(\s|$)#u', '$1' . mb_strtoupper($to) . '$2', $string);
                 $string = str_replace($from, $to, $string);
             }
         }

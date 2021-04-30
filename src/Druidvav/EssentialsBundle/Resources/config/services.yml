@@ -1,21 +1,21 @@
 services:
-    essentials.listener.command_exception:
-        class: Druidvav\EssentialsBundle\EventListener\ConsoleErrorListener
-        arguments: ['@logger']
-        tags:
-            - { name: kernel.event_listener, event: console.error }
-    essentials.monolog.activation_strategy:
-        class: Druidvav\EssentialsBundle\Monolog\CustomActivationStrategy
-        calls:
-            - [setContainer, ['@service_container'] ]
-    essentials.twig.basic:
-        class: Druidvav\EssentialsBundle\Twig\Basic
-        calls:
-            - [ setTranslator, [ "@translator" ] ]
-            - [ setKernel, [ "@kernel" ] ]
-        tags: [ "twig.extension" ]
-    essentials.twig.currency:
-        class: Druidvav\EssentialsBundle\Twig\Currency
-        calls:
-            - [ setTranslator, [ "@translator" ] ]
-        tags: [ "twig.extension" ]
+  essentials.listener.command_exception:
+    class: Druidvav\EssentialsBundle\EventListener\ConsoleErrorListener
+    arguments: ['@logger']
+    tags:
+      - { name: kernel.event_listener, event: console.error }
+  essentials.monolog.activation_strategy:
+    class: Druidvav\EssentialsBundle\Monolog\CustomActivationStrategy
+    calls:
+      - [setContainer, ['@service_container'] ]
+  Druidvav\EssentialsBundle\Twig\Basic:
+    calls:
+      - [ setTranslator, [ "@translator" ] ]
+      - [ setKernel, [ "@kernel" ] ]
+    tags: [ "twig.extension" ]
+  Druidvav\EssentialsBundle\Twig\Currency:
+    calls:
+      - [ setTranslator, [ "@translator" ] ]
+    tags: [ "twig.extension" ]
+  Druidvav\EssentialsBundle\Twig\Autolink:
+    tags: [ "twig.extension" ]

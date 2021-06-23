@@ -26,12 +26,12 @@ abstract class ContainerService implements ContainerInterface
         throw new LogicException('Not available here');
     }
 
-    public function has($id)
+    public function has($id): bool
     {
         return $this->container->has($id);
     }
 
-    public function initialized($id)
+    public function initialized($id): bool
     {
         return $this->container->initialized($id);
     }
@@ -41,7 +41,7 @@ abstract class ContainerService implements ContainerInterface
         return $this->container->getParameter($name);
     }
 
-    public function hasParameter($name)
+    public function hasParameter($name): bool
     {
         return $this->container->hasParameter($name);
     }

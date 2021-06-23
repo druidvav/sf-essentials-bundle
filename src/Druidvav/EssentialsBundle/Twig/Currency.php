@@ -2,25 +2,23 @@
 
 namespace Druidvav\EssentialsBundle\Twig;
 
+use DateTime;
+use Locale;
+use NumberFormatter;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\TwigFilter;
+use Twig_Extension;
 
-class Currency extends \Twig_Extension
+class Currency extends Twig_Extension
 {
-    /**
-     * @var TranslatorInterface $translator
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @return array
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('currency_symbol', [$this, 'currencySymbolFilter']),
@@ -40,11 +38,11 @@ class Currency extends \Twig_Extension
     public function currencySymbolFilter($currencyCode, $locale = null)
     {
         if ($locale === null) {
-            $locale = \Locale::getDefault();
+            $locale = Locale::getDefault();
         }
-        $formatter = new \NumberFormatter($locale.'@currency='.$currencyCode, \NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter($locale.'@currency='.$currencyCode, NumberFormatter::CURRENCY);
 
-        return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+        return $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
     }
 
     /**
@@ -108,9 +106,9 @@ class Currency extends \Twig_Extension
     /**
      * @param string $value
      * @param string $default
-     * @return bool|string
+     * @return string
      */
-    public function percentFilter($value, $default = '-')
+    public function percentFilter(string $value, string $default = '-'): string
     {
         if (is_numeric($value)) {
             $value *= 100;
@@ -118,7 +116,6 @@ class Currency extends \Twig_Extension
         } else {
             $value = $default;
         }
-
         return $value;
     }
 
@@ -145,11 +142,11 @@ class Currency extends \Twig_Extension
             return '-';
         }
 
-        if ($date instanceof \DateTime) {
+        if ($date instanceof DateTime) {
             return $date->format('d.m.Y');
         }
 
-        return (new \DateTime($date))->format('d.m.Y');
+        return (new DateTime($date))->format('d.m.Y');
     }
 
     /**
@@ -169,7 +166,7 @@ class Currency extends \Twig_Extension
     {
         $result = '';
         if ($number != 0) {
-            $transId = "number.{$number}";
+            $transId = "number.$number";
             if ($isOther && $number < 3) {
                 $transId .= '_other';
             }

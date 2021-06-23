@@ -7,15 +7,19 @@
     "psr-4": { "": "src/" }
   },
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=7.4.0",
     "ext-intl": "*",
     "ext-zlib": "*",
     "ext-iconv": "*",
     "ext-simplexml": "*",
+    "ext-json": "*",
     "symfony/translation": "~3.4",
     "symfony/framework-bundle": "~3.4",
     "symfony/twig-bundle": "~3.4",
     "sentry/sentry": "^1.5.0"
+  },
+  "suggest": {
+    "ext-pcntl": "Required to use some cool doctrine feature with my lib."
   },
   "require-dev": {
     "symfony/process": "~3.0",

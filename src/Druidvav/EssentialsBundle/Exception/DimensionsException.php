@@ -1,4 +1,6 @@
 <?php
 namespace Druidvav\EssentialsBundle\Exception;
 
-class DimensionsException extends \Exception { }
+use Exception;
+
+class DimensionsException extends Exception { }

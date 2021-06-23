@@ -1,6 +1,8 @@
 <?php
 namespace Druidvav\EssentialsBundle\Twig;
 
+use DateTime;
+use IntlTimeZone;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension;
@@ -18,18 +20,12 @@ class Basic extends Twig_Extension
         $this->translator = $translator;
     }
 
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator()
+    public function getTranslator(): TranslatorInterface
     {
         return $this->translator;
     }
 
-    /**
-     * @return Kernel
-     */
-    public function getKernel()
+    public function getKernel(): Kernel
     {
         return $this->kernel;
     }
@@ -39,7 +35,7 @@ class Basic extends Twig_Extension
         $this->kernel = $kernel;
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new Twig_SimpleFilter('format_date_interval', array($this, 'formatDateInterval')),
@@ -48,7 +44,7 @@ class Basic extends Twig_Extension
         );
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new Twig_SimpleFunction('array_print', array($this, 'arrayPrint')),
@@ -64,15 +60,15 @@ class Basic extends Twig_Extension
         return $this->translator->getLocale();
     }
 
-    public function isLocale($locale)
+    public function isLocale($locale): bool
     {
         return $this->translator->getLocale() == $locale;
     }
 
-    public function formatDateInterval($date, $format = '')
+    public function formatDateInterval($date, $format = ''): string
     {
         if (is_object($date) && is_a($date, 'DateTime')) {
-            /* @var $date \DateTime */
+            /* @var $date DateTime */
             $date = $date->getTimestamp();
         } elseif (!is_numeric($date)) {
             $date = strtotime($date);
@@ -103,14 +99,14 @@ class Basic extends Twig_Extension
         }
 
         $formatter->setPattern($pattern);
-        $formatter->setTimeZone(\IntlTimeZone::createTimeZone('GMT+0300'));
+        $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
         return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0");
     }
 
-    public function formatDateSmart($date, $format = '')
+    public function formatDateSmart($date, $format = ''): string
     {
         if (is_object($date) && is_a($date, 'DateTime')) {
-            /* @var $date \DateTime */
+            /* @var $date DateTime */
             $date = $date->getTimestamp();
         } elseif (!is_numeric($date)) {
             $date = strtotime($date);
@@ -129,14 +125,14 @@ class Basic extends Twig_Extension
         }
 
         $formatter->setPattern($pattern);
-        $formatter->setTimeZone(\IntlTimeZone::createTimeZone('GMT+0300'));
+        $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
         return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0");
     }
 
     public function formatDatePattern($date, $pattern)
     {
         if (is_object($date) && is_a($date, 'DateTime')) {
-            /* @var $date \DateTime */
+            /* @var $date DateTime */
             $date = $date->getTimestamp();
         } elseif (!is_numeric($date)) {
             $date = strtotime($date);
@@ -145,7 +141,7 @@ class Basic extends Twig_Extension
         $locale = $this->getTranslator()->getLocale();
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
         $formatter->setPattern($pattern);
-        $formatter->setTimeZone(\IntlTimeZone::createTimeZone('GMT+0300'));
+        $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
         return $formatter->format($date);
     }
 
@@ -154,12 +150,12 @@ class Basic extends Twig_Extension
         return print_r($string, true);
     }
 
-    public static function gruntAsset($string)
+    public static function gruntAsset($string): string
     {
         if (file_exists(WEB_DIRECTORY . '/../app/assets.json')) {
             $data = file_get_contents(WEB_DIRECTORY . '/../app/assets.json');
             if (empty($data)) return '/' . $string;
-            $assets = @json_decode($data, true);
+            $assets = json_decode($data, true);
             if (empty($assets)) return '/' . $string;
             foreach ($assets as $asset) {
                 if ($asset['originalPath'] == $string) {
@@ -172,7 +168,7 @@ class Basic extends Twig_Extension
 
     public function cdnAsset($string)
     {
-        if ($string{0} != '/') $string = '/' . $string;
+        if ($string[0] != '/') $string = '/' . $string;
 
         if ($this->getKernel()->getEnvironment() == 'prod') {
             return 'https://gpcdn.ru' . $string;

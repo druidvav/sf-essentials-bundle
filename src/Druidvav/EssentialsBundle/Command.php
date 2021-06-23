@@ -1,6 +1,5 @@
 <?php
 /**
- * @noinspection PhpInternalEntityUsedInspection
  * We'll assume that is internal library :)
  */
 /** @noinspection PhpUnusedParameterInspection */

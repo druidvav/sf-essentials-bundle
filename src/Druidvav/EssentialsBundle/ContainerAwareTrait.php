@@ -6,14 +6,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait ContainerAwareTrait
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ?ContainerInterface $container;
 
     /**
      * @required
-     * @param ContainerInterface $container
+     * @param ?ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container = null)
     {

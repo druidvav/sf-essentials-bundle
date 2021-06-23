@@ -1,6 +1,8 @@
 <?php
+/** @noinspection PhpComposerExtensionStubsInspection */
 namespace Druidvav\EssentialsBundle;
 
+use Exception;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Process\Process;
 
@@ -45,6 +47,9 @@ class ConsoleWorkerManager
     public function start()
     {
         $this->logger->info('Started with pid=' . getmypid());
+        if (!function_exists('pcntl_signal')) {
+            throw new Exception('ext-pcntl is required for that');
+        }
 
         pcntl_signal(SIGINT, function () {
             $this->logger->info('Got SIGINT, stopping workers...');
@@ -62,7 +67,7 @@ class ConsoleWorkerManager
             for ($wi = 1; $wi <= $worker['count']; $wi++) {
                 $pi = sizeof($this->processes);
                 $this->processes[$pi] = [
-                    'title' => "Worker #{$wi} for {$worker['command']}",
+                    'title' => "Worker #$wi for {$worker['command']}",
                     'command' => 'exec ' . $this->console . ' ' . $worker['command'] . ' -e ' . $this->env,
                     'process' => null,
                     'retryCount' => 0
@@ -124,6 +129,6 @@ class ConsoleWorkerManager
         $process = new Process($this->processes[$pi]['command']);
         $process->start();
         $pid = $process->getPid();
-        $this->logger->info("{$this->processes[$pi]['title']} started, pid={$pid}");
+        $this->logger->info("{$this->processes[$pi]['title']} started, pid=$pid");
     }
 }

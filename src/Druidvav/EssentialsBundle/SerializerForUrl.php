@@ -1,9 +1,6 @@
 <?php
 namespace Druidvav\EssentialsBundle;
 
-use Symfony\Component\Console\Event\ConsoleExceptionEvent;
-use Psr\Log\LoggerInterface;
-
 class SerializerForUrl
 {
     public static function serialize($data, $compact = true)

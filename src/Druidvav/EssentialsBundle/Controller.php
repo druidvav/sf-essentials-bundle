@@ -4,12 +4,13 @@ namespace Druidvav\EssentialsBundle;
 use Doctrine\ORM\EntityManager;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class Controller extends BaseController
 {
     use LoggerAwareTrait;
 
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->container;
     }

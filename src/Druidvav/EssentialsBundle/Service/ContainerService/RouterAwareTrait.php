@@ -8,18 +8,7 @@ trait RouterAwareTrait
 {
     use ContainerAwareTrait;
 
-    /**
-     * Generates a URL from the given parameters.
-     *
-     * @param string      $route         The name of the route
-     * @param mixed       $parameters    An array of parameters
-     * @param bool|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
-     *
-     * @return string The generated URL
-     *
-     * @see UrlGeneratorInterface
-     */
-    public function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateUrl(string $route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         return $this->container->get('router')->generate($route, $parameters, $referenceType);
     }

@@ -6,14 +6,10 @@ use Psr\Log\LoggerInterface;
 
 trait LoggerAwareTrait
 {
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * @required
-     * @param LoggerInterface $logger
      */
     public function setLogger(LoggerInterface $logger)
     {

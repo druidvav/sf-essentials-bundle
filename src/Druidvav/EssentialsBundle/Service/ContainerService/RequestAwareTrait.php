@@ -15,11 +15,9 @@ trait RequestAwareTrait
 
     /**
      * Shortcut to return the request service.
-     *
      * @deprecated
-     * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->container->get('request_stack')->getCurrentRequest();
     }

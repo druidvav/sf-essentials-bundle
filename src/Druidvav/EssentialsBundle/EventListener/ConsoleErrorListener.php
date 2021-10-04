@@ -26,9 +26,9 @@ class ConsoleErrorListener
         $event->stopPropagation();
     }
 
-    private static function getInputString(ConsoleEvent $event)
+    private static function getInputString(ConsoleEvent $event): array|string|null
     {
-        $commandName = $event->getCommand() ? $event->getCommand()->getName() : null;
+        $commandName = $event->getCommand()?->getName();
         $input = $event->getInput();
 
         if (method_exists($input, '__toString')) {

@@ -3,6 +3,7 @@
 namespace Druidvav\EssentialsBundle;
 
 use Exception;
+use JetBrains\PhpStorm\NoReturn;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Process\Process;
 
@@ -107,7 +108,7 @@ class ConsoleWorkerManager
         } while (!$this->isShuttingDown);
     }
 
-    protected function shutdown()
+    #[NoReturn] protected function shutdown(): void
     {
         $this->isShuttingDown = true;
         foreach ($this->processes as $i => &$worker) {

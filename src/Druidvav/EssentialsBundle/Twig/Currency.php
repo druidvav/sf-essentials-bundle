@@ -5,11 +5,11 @@ namespace Druidvav\EssentialsBundle\Twig;
 use DateTime;
 use Locale;
 use NumberFormatter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\TwigFilter;
-use Twig_Extension;
+use Twig\Extension\AbstractExtension;
 
-class Currency extends Twig_Extension
+class Currency extends AbstractExtension
 {
     private TranslatorInterface $translator;
 
@@ -30,26 +30,16 @@ class Currency extends Twig_Extension
         ];
     }
 
-    /**
-     * @param string $currencyCode
-     * @param string $locale
-     * @return bool|string
-     */
-    public function currencySymbolFilter($currencyCode, $locale = null)
+    public function currencySymbolFilter($currencyCode, $locale = null): false|string
     {
         if ($locale === null) {
             $locale = Locale::getDefault();
         }
         $formatter = new NumberFormatter($locale.'@currency='.$currencyCode, NumberFormatter::CURRENCY);
-
         return $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
     }
 
-    /**
-     * @param string|float $sum
-     * @return string
-     */
-    public function numberToWordsFilter($sum)
+    public function numberToWordsFilter($sum): string
     {
         $intPart = (int) $sum;
         $decimalPart = abs(round(($sum - $intPart) * 100));
@@ -70,26 +60,22 @@ class Currency extends Twig_Extension
         for ($i = count($result) - 1; $i >= 0; $i--) {
             $strResult .= $this->toWords($result[$i], $i === 1);
             if ($i !== 0) {
-                $strResult .= ' '.$this->translator->transChoice('number.unit.'.pow(1000, $i), $result[$i], [], 'numbers');
+                $strResult .= ' '.$this->translator->trans('number.unit.'.pow(1000, $i), [ 'count' => $result[$i] ], 'numbers');
             }
         }
 
         if ($intPart !== 0) {
-            $strResult .= ' '.$this->translator->transChoice('number.unit.currency', abs($intPart), [], 'numbers');
+            $strResult .= ' '.$this->translator->trans('number.unit.currency', [ 'count' => abs($intPart) ], 'numbers');
         }
 
         if ($decimalPart > 0) {
-            $strResult .= ' '.$this->toWords($decimalPart, true).' '.$this->translator->transChoice('number.unit.small_currency', $decimalPart, [], 'numbers');
+            $strResult .= ' '.$this->toWords($decimalPart, true).' '.$this->translator->trans('number.unit.small_currency', [ 'count' => $decimalPart ], 'numbers');
         }
 
         return $strResult;
     }
 
-    /**
-     * @param string|float $sum
-     * @return string
-     */
-    public function numberToPartsFilter($sum)
+    public function numberToPartsFilter($sum): string
     {
         $intPart = (int) $sum;
         $decimalPart = abs(round(($sum - $intPart) * 100));
@@ -97,17 +83,12 @@ class Currency extends Twig_Extension
         return sprintf(
             '%s %s %s %s',
             $intPart,
-            $this->translator->transChoice('number.unit.currency', $intPart, [], 'numbers'),
+            $this->translator->trans('number.unit.currency', [ 'count' => $intPart ], 'numbers'),
             str_pad($decimalPart, 2, '0', STR_PAD_LEFT),
-            $this->translator->transChoice('number.unit.small_currency', $decimalPart, [], 'numbers')
+            $this->translator->trans('number.unit.small_currency', [ 'count' => $decimalPart ], 'numbers')
         );
     }
 
-    /**
-     * @param string $value
-     * @param string $default
-     * @return string
-     */
     public function percentFilter(string $value, string $default = '-'): string
     {
         if (is_numeric($value)) {
@@ -119,24 +100,15 @@ class Currency extends Twig_Extension
         return $value;
     }
 
-    /**
-     * @param mixed $sum
-     * @return string
-     */
-    public function numberNormalizer($sum)
+    public function numberNormalizer($sum): string
     {
         if (!$sum) {
             return '-';
         }
-
         return number_format($sum, 2, '.', '');
     }
 
-    /**
-     * @param mixed $date
-     * @return string
-     */
-    public function dateNormalizer($date)
+    public function dateNormalizer($date): string
     {
         if (!$date) {
             return '-';
@@ -149,20 +121,12 @@ class Currency extends Twig_Extension
         return (new DateTime($date))->format('d.m.Y');
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'currency_extension';
     }
 
-    /**
-     * @param      $number
-     * @param bool $isOther
-     * @return string
-     */
-    private function toWords($number, $isOther = false)
+    private function toWords($number, bool $isOther = false): string
     {
         $result = '';
         if ($number != 0) {

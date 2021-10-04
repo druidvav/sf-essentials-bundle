@@ -7,7 +7,7 @@ use Twig\TwigFilter;
 class Autolink extends AbstractExtension
 {
     /**
-     * {@inheritDoc}
+     * @return TwigFilter[]
      */
     public function getFilters(): array
     {

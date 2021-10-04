@@ -2,8 +2,7 @@
 namespace Druidvav\EssentialsBundle\Service\ContainerService;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ObjectManager;
 use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use LogicException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,10 +28,7 @@ trait ContainerServiceTrait
         return $this->container->get('doctrine');
     }
 
-    /**
-     * @return ObjectManager|EntityManager|object
-     */
-    protected function getEm()
+    protected function getEm(): ObjectManager
     {
         return $this->getDoctrine()->getManager();
     }

@@ -16,7 +16,7 @@ abstract class ContainerService implements ContainerInterface
         }
     }
 
-    public function get($id, $invalidBehavior = ContainerService::EXCEPTION_ON_INVALID_REFERENCE)
+    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
         return $this->container->get($id, $invalidBehavior);
     }
@@ -36,7 +36,7 @@ abstract class ContainerService implements ContainerInterface
         return $this->container->initialized($id);
     }
 
-    public function getParameter($name)
+    public function getParameter($name): float|int|bool|array|string|null
     {
         return $this->container->getParameter($name);
     }

@@ -11,7 +11,8 @@ class CustomActivationStrategy implements ActivationStrategyInterface, Container
 {
     use ContainerAwareTrait;
 
-    public function isHandlerActivated(array $record) {
+    public function isHandlerActivated(array $record): bool
+    {
         if(isset($record['context']) && isset($record['context']['exception']) && ($record['context']['exception'] instanceof HttpException)) {
             return false;
         }

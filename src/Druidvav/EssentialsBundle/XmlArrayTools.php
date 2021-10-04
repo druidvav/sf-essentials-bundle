@@ -5,7 +5,7 @@ use SimpleXMLElement;
 
 class XmlArrayTools
 {
-    private static function parseXmlElement(SimpleXMLElement $xmlElement)
+    private static function parseXmlElement(SimpleXMLElement $xmlElement): array|string
     {
         $out = [];
         if ($xmlElement->attributes()) {
@@ -34,7 +34,7 @@ class XmlArrayTools
         return $out;
     }
 
-    public static function xmlToArray($xml)
+    public static function xmlToArray($xml): array|string
     {
         if (!$xml instanceof SimpleXMLElement) {
             $xml = str_replace(["\r\n", "\n", "\t"], '', $xml);
@@ -44,7 +44,7 @@ class XmlArrayTools
         else return [];
     }
 
-    public static function arrayToXml($array)
+    public static function arrayToXml($array): string
     {
         $xmlResult = '';
         foreach ($array as $key => $value) {
@@ -76,7 +76,7 @@ class XmlArrayTools
             $propertiesString = '';
             if (isset($xmlStruct['@attributes']) && !empty($xmlStruct['@attributes'])) {
                 foreach ($xmlStruct['@attributes'] as $attributeName => $attributeValue) {
-                    $propertiesString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue, ENT_QUOTES|ENT_HTML5, 'UTF-8') . '" ';
+                    $propertiesString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue, ENT_QUOTES|ENT_HTML5) . '" ';
                 }
             }
             $xmlResult .= '<' . $xmlStruct['tag'] . $propertiesString . ((!empty($xmlStruct['body']) || $xmlStruct['body'] === '0') ? '>' . $xmlStruct['body'] . '</' . $xmlStruct['tag'] . '>' : '/>');

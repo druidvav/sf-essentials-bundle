@@ -30,14 +30,14 @@ class Translit
      * @param int $allow_slashes разрешены ли слеши
      * @return string
      */
-    public static function url($string, $allow_slashes = self::TR_NO_SLASHES)
+    public static function url(string $string, int $allow_slashes = self::TR_NO_SLASHES): string
     {
-        $string = preg_replace("#([^\s]+)\'#usi", '\1', $string);
-        $string = preg_replace('#[\s+\-\:\;\'\"]#usi', ' ', $string);
+        $string = preg_replace("#([^\s]+)'#usi", '\1', $string);
+        $string = preg_replace('#[\s+\-:;\'\"]#usi', ' ', $string);
 
         $slash = "";
         if ($allow_slashes) {
-            $slash = '\/';
+            $slash = '/';
         }
 
         static $LettersFrom = 'а б в г д е з и к л м н о п р с т у ф ы э й х ё';
@@ -49,7 +49,7 @@ class Translit
             "ш" => "sh", "щ" => "sch", "ю" => "yu", "я" => "ya",
         );
 
-        $string = preg_replace('/[_\s\.,?!\[\](){}]+/', '-', $string);
+        $string = preg_replace('/[_\s.,?!\[\](){}]+/', '-', $string);
         $string = preg_replace("/-{2,}/", "--", $string);
         $string = preg_replace("/_-+_/", "--", $string);
         $string = preg_replace('/[_\-]+$/', '', $string);
@@ -57,8 +57,8 @@ class Translit
         $string = mb_strtolower($string, 'UTF-8');
 
         //here we replace ъ/ь
-        $string = preg_replace("/(ь|ъ)([".$Vowel."])/", "j\\2", $string);
-        $string = preg_replace("/(ь|ъ)/", "", $string);
+        $string = preg_replace("/([ьъ])([".$Vowel."])/", "j\\1", $string);
+        $string = preg_replace("/([ьъ])/", "", $string);
 
         //transliterating
         $string = str_replace(explode(' ', $LettersFrom),  explode(' ', $LettersTo), $string);
@@ -69,23 +69,18 @@ class Translit
 
         $string = preg_replace('/^[_\-]+/', '', $string);
         $string = preg_replace('/[_\-]+$/', '', $string);
-        $string = preg_replace('/[\_\-]+$/', '-', $string);
-
-        return $string;
+        return preg_replace('/[_\-]+$/', '-', $string);
     }
 
-    public static function text($string)
+    public static function text($string): bool|string
     {
         foreach (self::TRANSLITERATION_MAP as $from => $to) {
-            if (mb_strlen($to) == 1 || $from != mb_strtoupper($from)) {
-                $string = str_replace($from, $to, $string);
-            } else {
+            if (mb_strlen($to) != 1 && $from == mb_strtoupper($from)) {
                 $string = preg_replace('#' . $from . '(\p{Lu})#u', mb_strtoupper($to) . '$1', $string);
                 $string = preg_replace('#(\p{Lu})' . $from . '(\s|$)#u', '$1' . mb_strtoupper($to) . '$2', $string);
-                $string = str_replace($from, $to, $string);
             }
+            $string = str_replace($from, $to, $string);
         }
-        $string = iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
-        return $string;
+        return iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
     }
 }

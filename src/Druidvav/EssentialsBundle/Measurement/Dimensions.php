@@ -34,13 +34,12 @@ class Dimensions
      * @param float $x
      * @param float $y
      * @param float $z
-     * @param string $system
+     * @param string|null $system
      * @throws DimensionsException
      */
-    public function __construct($x, $y, $z, $system = null)
+    public function __construct(float $x, float $y, float $z, string $system = null)
     {
         $this->setSystem($system);
-        $x = floatval($x); $y = floatval($y); $z = floatval($z);
         $this->x = $x * $this->k;
         $this->y = $y * $this->k;
         $this->z = $z * $this->k;
@@ -54,33 +53,33 @@ class Dimensions
 
     public function setSystem($system): Dimensions
     {
-        switch ($system) {
-            case self::SYSTEM_CM: $this->k = 10; break;
-            case self::SYSTEM_MM: $this->k = 1; break;
-            case self::SYSTEM_INCH: $this->k = 25.4; break;
-            default: throw new DimensionsException('Unknown measurement system');
-        }
+        $this->k = match ($system) {
+            self::SYSTEM_CM => 10,
+            self::SYSTEM_MM => 1,
+            self::SYSTEM_INCH => 25.4,
+            default => throw new DimensionsException('Unknown measurement system'),
+        };
         $this->system = $system;
         return $this;
     }
 
-    public function getSystem()
+    public function getSystem(): string
     {
         return $this->system;
     }
 
-    public function getMmX() { return intval($this->x); }
-    public function getCmX() { return round($this->x / 10, 1); }
-    public function getLocalX() { return round($this->x / $this->k, 1); }
-    public function getMmY() { return intval($this->y); }
-    public function getCmY() { return round($this->y / 10, 1); }
-    public function getLocalY() { return round($this->y / $this->k, 1); }
-    public function getMmZ() { return intval($this->z); }
-    public function getCmZ() { return round($this->z / 10, 1); }
-    public function getLocalZ() { return round($this->z / $this->k, 1); }
+    public function getMmX(): int { return intval($this->x); }
+    public function getCmX(): int { return round($this->x / 10, 1); }
+    public function getLocalX(): int { return round($this->x / $this->k, 1); }
+    public function getMmY(): int { return intval($this->y); }
+    public function getCmY(): int { return round($this->y / 10, 1); }
+    public function getLocalY(): int { return round($this->y / $this->k, 1); }
+    public function getMmZ(): int { return intval($this->z); }
+    public function getCmZ(): int { return round($this->z / 10, 1); }
+    public function getLocalZ(): int { return round($this->z / $this->k, 1); }
 
-    public function getMaxLengthMm() { return max($this->getMmX(), $this->getMmY(), $this->getMmZ()); }
-    public function getSumLengthMm() { return $this->getMmX() + $this->getMmY() + $this->getMmZ(); }
+    public function getMaxLengthMm(): int { return max($this->getMmX(), $this->getMmY(), $this->getMmZ()); }
+    public function getSumLengthMm(): int { return $this->getMmX() + $this->getMmY() + $this->getMmZ(); }
 
     public function getMmPretty(): string
     {

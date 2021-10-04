@@ -3,7 +3,7 @@ namespace Druidvav\EssentialsBundle;
 
 class SerializerForUrl
 {
-    public static function serialize($data, $compact = true)
+    public static function serialize($data, $compact = true): array|string
     {
         $data = serialize($data);
         if ($compact) $data = gzencode($data);
@@ -17,12 +17,12 @@ class SerializerForUrl
         return unserialize($data);
     }
 
-    public static function encode($string)
+    public static function encode($string): array|string
     {
         return str_replace('/', '-', base64_encode($string));
     }
 
-    public static function decode($string)
+    public static function decode($string): bool|string
     {
         return base64_decode(str_replace([ ' ', '-' ], [ '+', '/' ], $string));
     }

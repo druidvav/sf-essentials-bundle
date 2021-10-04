@@ -8,32 +8,22 @@ class Flag extends Type
 {
     const FLAG = 'flag';
 
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return "enum('y','n')";
     }
 
-    /**
-     * @param string|null $value
-     * @param AbstractPlatform $platform
-     * @return boolean|null
-     */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?bool
     {
         return $value === null ? null : $value == 'y';
     }
 
-    /**
-     * @param boolean $value
-     * @param AbstractPlatform $platform
-     * @return string
-     */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         return $value === null ? null : ($value ? 'y' : 'n');
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::FLAG;
     }

@@ -1,7 +1,8 @@
 <?php
-namespace Druidvav\EssentialsBundle;
+namespace Druidvav\Essentials;
 
 use Doctrine\Persistence\ObjectManager;
+use Druidvav\EssentialsBundle\LoggerAwareTrait;
 use LogicException;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

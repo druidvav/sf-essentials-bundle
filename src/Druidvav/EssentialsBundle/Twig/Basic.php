@@ -150,10 +150,11 @@ class Basic extends Twig_Extension
         return print_r($string, true);
     }
 
-    public static function gruntAsset($string): string
+    public function gruntAsset($string): string
     {
-        if (file_exists(WEB_DIRECTORY . '/../app/assets.json')) {
-            $data = file_get_contents(WEB_DIRECTORY . '/../app/assets.json');
+        $assetsJsonPath = $this->getKernel()->getProjectDir() . '/app/assets.json';
+        if (file_exists($assetsJsonPath)) {
+            $data = file_get_contents($assetsJsonPath);
             if (empty($data)) return '/' . $string;
             $assets = json_decode($data, true);
             if (empty($assets)) return '/' . $string;

@@ -4,13 +4,13 @@ namespace Druidvav\EssentialsBundle\Twig;
 use DateTime;
 use IntlTimeZone;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Extension;
 use IntlDateFormatter;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig\TwigFunction;
+use Twig\TwigFilter;
+use Twig\Extension\AbstractExtension;
 
-class Basic extends Twig_Extension
+class Basic extends AbstractExtension
 {
     protected $translator;
     protected $kernel;
@@ -38,20 +38,20 @@ class Basic extends Twig_Extension
     public function getFilters(): array
     {
         return array(
-            new Twig_SimpleFilter('format_date_interval', array($this, 'formatDateInterval')),
-            new Twig_SimpleFilter('format_date_smart', array($this, 'formatDateSmart')),
-            new Twig_SimpleFilter('format_date_pattern', array($this, 'formatDatePattern')),
+            new TwigFilter('format_date_interval', array($this, 'formatDateInterval')),
+            new TwigFilter('format_date_smart', array($this, 'formatDateSmart')),
+            new TwigFilter('format_date_pattern', array($this, 'formatDatePattern')),
         );
     }
 
     public function getFunctions(): array
     {
         return array(
-            new Twig_SimpleFunction('array_print', array($this, 'arrayPrint')),
-            new Twig_SimpleFunction('grunt_asset', array($this, 'gruntAsset')),
-            new Twig_SimpleFunction('cdn_asset', array($this, 'cdnAsset')),
-            new Twig_SimpleFunction('get_locale', array($this, 'getLocale')),
-            new Twig_SimpleFunction('is_locale', array($this, 'isLocale')),
+            new TwigFunction('array_print', array($this, 'arrayPrint')),
+            new TwigFunction('grunt_asset', array($this, 'gruntAsset')),
+            new TwigFunction('cdn_asset', array($this, 'cdnAsset')),
+            new TwigFunction('get_locale', array($this, 'getLocale')),
+            new TwigFunction('is_locale', array($this, 'isLocale')),
         );
     }
 
@@ -152,9 +152,9 @@ class Basic extends Twig_Extension
 
     public function gruntAsset($string): string
     {
-        $assetsJsonPath = $this->getKernel()->getProjectDir() . '/app/assets.json';
-        if (file_exists($assetsJsonPath)) {
-            $data = file_get_contents($assetsJsonPath);
+        $assetsFilename = $this->getKernel()->getProjectDir() . '/app/assets.json';
+        if (file_exists($assetsFilename)) {
+            $data = file_get_contents($assetsFilename);
             if (empty($data)) return '/' . $string;
             $assets = json_decode($data, true);
             if (empty($assets)) return '/' . $string;
@@ -165,16 +165,5 @@ class Basic extends Twig_Extension
             }
         }
         return '/' . $string;
-    }
-
-    public function cdnAsset($string)
-    {
-        if ($string[0] != '/') $string = '/' . $string;
-
-        if ($this->getKernel()->getEnvironment() == 'prod') {
-            return 'https://gpcdn.ru' . $string;
-        } else {
-            return $string;
-        }
     }
 }

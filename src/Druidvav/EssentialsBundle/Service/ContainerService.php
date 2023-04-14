@@ -16,7 +16,7 @@ abstract class ContainerService implements ContainerInterface
         }
     }
 
-    public function get($id, $invalidBehavior = ContainerService::EXCEPTION_ON_INVALID_REFERENCE)
+    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
         return $this->container->get($id, $invalidBehavior);
     }

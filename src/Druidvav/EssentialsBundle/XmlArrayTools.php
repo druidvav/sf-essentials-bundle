@@ -44,7 +44,7 @@ class XmlArrayTools
         else return [];
     }
 
-    public static function arrayToXml($array)
+    public static function arrayToXml($array): string
     {
         $xmlResult = '';
         foreach ($array as $key => $value) {
@@ -74,7 +74,7 @@ class XmlArrayTools
             }
 
             $propertiesString = '';
-            if (isset($xmlStruct['@attributes']) && !empty($xmlStruct['@attributes'])) {
+            if (!empty($xmlStruct['@attributes'])) {
                 foreach ($xmlStruct['@attributes'] as $attributeName => $attributeValue) {
                     $propertiesString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue, ENT_QUOTES|ENT_HTML5, 'UTF-8') . '" ';
                 }

@@ -6,10 +6,10 @@ use DateTime;
 use Locale;
 use NumberFormatter;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig_Extension;
 
-class Currency extends Twig_Extension
+class Currency extends AbstractExtension
 {
     private TranslatorInterface $translator;
 
@@ -32,10 +32,10 @@ class Currency extends Twig_Extension
 
     /**
      * @param string $currencyCode
-     * @param string $locale
+     * @param string|null $locale
      * @return bool|string
      */
-    public function currencySymbolFilter($currencyCode, $locale = null)
+    public function currencySymbolFilter(string $currencyCode, ?string $locale = null)
     {
         if ($locale === null) {
             $locale = Locale::getDefault();
@@ -45,11 +45,7 @@ class Currency extends Twig_Extension
         return $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
     }
 
-    /**
-     * @param string|float $sum
-     * @return string
-     */
-    public function numberToWordsFilter($sum)
+    public function numberToWordsFilter($sum): string
     {
         $intPart = (int) $sum;
         $decimalPart = abs(round(($sum - $intPart) * 100));
@@ -85,11 +81,7 @@ class Currency extends Twig_Extension
         return $strResult;
     }
 
-    /**
-     * @param string|float $sum
-     * @return string
-     */
-    public function numberToPartsFilter($sum)
+    public function numberToPartsFilter($sum): string
     {
         $intPart = (int) $sum;
         $decimalPart = abs(round(($sum - $intPart) * 100));
@@ -103,11 +95,6 @@ class Currency extends Twig_Extension
         );
     }
 
-    /**
-     * @param string $value
-     * @param string $default
-     * @return string
-     */
     public function percentFilter(string $value, string $default = '-'): string
     {
         if (is_numeric($value)) {
@@ -119,50 +106,31 @@ class Currency extends Twig_Extension
         return $value;
     }
 
-    /**
-     * @param mixed $sum
-     * @return string
-     */
-    public function numberNormalizer($sum)
+    public function numberNormalizer($sum): string
     {
         if (!$sum) {
             return '-';
         }
-
         return number_format($sum, 2, '.', '');
     }
 
-    /**
-     * @param mixed $date
-     * @return string
-     */
-    public function dateNormalizer($date)
+    public function dateNormalizer($date): string
     {
         if (!$date) {
             return '-';
         }
-
         if ($date instanceof DateTime) {
             return $date->format('d.m.Y');
         }
-
         return (new DateTime($date))->format('d.m.Y');
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'currency_extension';
     }
 
-    /**
-     * @param      $number
-     * @param bool $isOther
-     * @return string
-     */
-    private function toWords($number, $isOther = false)
+    private function toWords($number, bool $isOther = false): string
     {
         $result = '';
         if ($number != 0) {

@@ -30,7 +30,7 @@ class Translit
      * @param int $allow_slashes разрешены ли слеши
      * @return string
      */
-    public static function url($string, $allow_slashes = self::TR_NO_SLASHES)
+    public static function url($string, $allow_slashes = self::TR_NO_SLASHES): string
     {
         $string = preg_replace("#([^\s]+)\'#usi", '\1', $string);
         $string = preg_replace('#[\s+\-\:\;\'\"]#usi', ' ', $string);
@@ -77,15 +77,12 @@ class Translit
     public static function text($string)
     {
         foreach (self::TRANSLITERATION_MAP as $from => $to) {
-            if (mb_strlen($to) == 1 || $from != mb_strtoupper($from)) {
-                $string = str_replace($from, $to, $string);
-            } else {
+            if (mb_strlen($to) != 1 && $from == mb_strtoupper($from)) {
                 $string = preg_replace('#' . $from . '(\p{Lu})#u', mb_strtoupper($to) . '$1', $string);
                 $string = preg_replace('#(\p{Lu})' . $from . '(\s|$)#u', '$1' . mb_strtoupper($to) . '$2', $string);
-                $string = str_replace($from, $to, $string);
             }
+            $string = str_replace($from, $to, $string);
         }
-        $string = iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
-        return $string;
+        return iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
     }
 }

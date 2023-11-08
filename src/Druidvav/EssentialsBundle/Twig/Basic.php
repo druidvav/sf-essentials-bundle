@@ -100,7 +100,7 @@ class Basic extends AbstractExtension
 
         $formatter->setPattern($pattern);
         $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
-        return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0");
+        return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0\xE2\x80\xAF");
     }
 
     public function formatDateSmart($date, $format = ''): string
@@ -126,7 +126,7 @@ class Basic extends AbstractExtension
 
         $formatter->setPattern($pattern);
         $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
-        return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0");
+        return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0\xE2\x80\xAF");
     }
 
     public function formatDatePattern($date, $pattern)

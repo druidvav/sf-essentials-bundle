@@ -93,9 +93,9 @@ class Basic extends AbstractExtension
         $pattern = $formatter->getPattern();
 
         if ($currentYear) {
-            $pattern = trim(str_replace([ ', y', 'y', '\'г\'.' ], '', $pattern));
+            $pattern = trim(str_replace([ ', y', 'y', '\'г\'.', 'թ.' ], '', $pattern));
         } else {
-            $pattern = str_replace([ '\'г\'.' ], '', $pattern);
+            $pattern = str_replace([ '\'г\'.', 'թ.' ], '', $pattern);
         }
 
         $formatter->setPattern($pattern);

@@ -86,21 +86,7 @@ class Basic extends AbstractExtension
             return $this->getTranslator()->trans($diff < 0 ? 'general.period_ago' : 'general.period_in', [ '%str%' => $diffInt . ' ' . $int ]);
         }
 
-        $locale = $this->getTranslator()->getLocale();
-        $currentYear = date('Y', $date) == date('Y');
-        $dateMode = $format == 'long' || $currentYear ? IntlDateFormatter::LONG : IntlDateFormatter::MEDIUM;
-        $formatter = IntlDateFormatter::create($locale, $dateMode, IntlDateFormatter::NONE);
-        $pattern = $formatter->getPattern();
-
-        if ($currentYear) {
-            $pattern = trim(str_replace([ ', y', 'y', '\'г\'.', 'թ.' ], '', $pattern));
-        } else {
-            $pattern = str_replace([ '\'г\'.', 'թ.' ], '', $pattern);
-        }
-
-        $formatter->setPattern($pattern);
-        $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
-        return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0\xE2\x80\xAF");
+        return $this->formatDateSmart($date, $format);
     }
 
     public function formatDateSmart($date, $format = ''): string
@@ -119,9 +105,9 @@ class Basic extends AbstractExtension
         $pattern = $formatter->getPattern();
 
         if ($currentYear) {
-            $pattern = trim(str_replace([ ', y', 'y', '\'г\'.' ], '', $pattern));
+            $pattern = trim(str_replace([ ', y', 'y', '\'г\'.', 'թ.' ], '', $pattern));
         } else {
-            $pattern = str_replace([ '\'г\'.' ], '', $pattern);
+            $pattern = str_replace([ '\'г\'.', 'թ.' ], '', $pattern);
         }
 
         $formatter->setPattern($pattern);

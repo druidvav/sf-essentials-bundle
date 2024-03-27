@@ -1,51 +1,51 @@
 {% use "DvEssentialsBundle::form_div_layout.html.twig" %}
 
 {%- block form_start -%}
-    {{ bootstrap_backup_form_settings() }}
+    {{ bs5_backup_form_settings() }}
     {% if style is defined %}
         {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-' ~ style)|trim }) %}
-        {{ bootstrap_set_style(style) }}
+        {{ bs5_set_style(style) }}
     {% endif %}
     {% if form.vars.errors|length > 0 %}
         {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' has-global-errors')|trim }) %}
     {% endif %}
     {% if col_size is defined %}
-        {{ bootstrap_set_col_size(col_size) }}
+        {{ bs5_set_col_size(col_size) }}
     {% endif %}
     {% if widget_col is defined %}
-        {{ bootstrap_set_widget_col(widget_col) }}
+        {{ bs5_set_widget_col(widget_col) }}
     {% endif %}
     {% if label_col is defined %}
-        {{ bootstrap_set_label_col(label_col) }}
+        {{ bs5_set_label_col(label_col) }}
     {% endif %}
     {% if simple_col is defined %}
-        {{ bootstrap_set_simple_col(simple_col) }}
+        {{ bs5_set_simple_col(simple_col) }}
     {% endif %}
     {{- parent() -}}
 {%- endblock form_start -%}
 
 {%- block form_end -%}
     {{- parent() -}}
-    {% if bootstrap_get_style() %}
-        {{ bootstrap_set_style('') }}
+    {% if bs5_get_style() %}
+        {{ bs5_set_style('') }}
     {% endif %}
-    {% if bootstrap_get_col_size() %}
-        {{ bootstrap_set_col_size('lg') }}
+    {% if bs5_get_col_size() %}
+        {{ bs5_set_col_size('lg') }}
     {% endif %}
-    {% if bootstrap_get_widget_col() %}
-        {{ bootstrap_set_widget_col(10) }}
+    {% if bs5_get_widget_col() %}
+        {{ bs5_set_widget_col(10) }}
     {% endif %}
-    {% if bootstrap_get_label_col() %}
-        {{ bootstrap_set_label_col(2) }}
+    {% if bs5_get_label_col() %}
+        {{ bs5_set_label_col(2) }}
     {% endif %}
-    {% if bootstrap_get_simple_col() %}
-        {{ bootstrap_set_simple_col(false) }}
+    {% if bs5_get_simple_col() %}
+        {{ bs5_set_simple_col(false) }}
     {% endif %}
-    {{ bootstrap_restore_form_settings() }}
+    {{ bs5_restore_form_settings() }}
 {%- endblock form_end -%}
 
 {%- block form_label -%}
-    {% set col_size = col_size|default(bootstrap_get_col_size()) %}
+    {% set col_size = col_size|default(bs5_get_col_size()) %}
 
     {% if attr.label_col is defined and attr.label_col is not empty %}
         {% set label_col = attr.label_col %}
@@ -55,8 +55,8 @@
     {% endif %}
 
     {% if label is not same as (false) %}
-        {% set style = style|default(bootstrap_get_style()) %}
-        {% set label_col = label_col|default(bootstrap_get_label_col()) %}
+        {% set style = style|default(bs5_get_style()) %}
+        {% set label_col = label_col|default(bs5_get_label_col()) %}
 
         {% if attr.style is defined and attr.style is not empty %}
             {% set style = attr.style %}

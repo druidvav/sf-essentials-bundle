@@ -19,5 +19,5 @@ services:
     tags: [ "twig.extension" ]
   Druidvav\EssentialsBundle\Twig\Autolink:
     tags: [ "twig.extension" ]
-  Druidvav\EssentialsBundle\Twig\BootstrapFormExtension:
+  Druidvav\EssentialsBundle\Twig\Bootstrap5FormExtension:
     tags: [ "twig.extension" ]

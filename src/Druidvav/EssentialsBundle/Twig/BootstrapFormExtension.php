@@ -4,7 +4,7 @@ namespace Druidvav\EssentialsBundle\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class BootstrapFormExtension extends AbstractExtension
+class Bootstrap5FormExtension extends AbstractExtension
 {
     private string $style = '';
     private string $colSize = 'lg';
@@ -19,18 +19,18 @@ class BootstrapFormExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return array(
-            new TwigFunction('bootstrap_set_style', array($this, 'setStyle')),
-            new TwigFunction('bootstrap_get_style', array($this, 'getStyle')),
-            new TwigFunction('bootstrap_set_col_size', array($this, 'setColSize')),
-            new TwigFunction('bootstrap_get_col_size', array($this, 'getColSize')),
-            new TwigFunction('bootstrap_set_widget_col', array($this, 'setWidgetCol')),
-            new TwigFunction('bootstrap_get_widget_col', array($this, 'getWidgetCol')),
-            new TwigFunction('bootstrap_set_label_col', array($this, 'setLabelCol')),
-            new TwigFunction('bootstrap_get_label_col', array($this, 'getLabelCol')),
-            new TwigFunction('bootstrap_backup_form_settings', array($this, 'backupFormSettings')),
-            new TwigFunction('bootstrap_restore_form_settings', array($this, 'restoreFormSettings')),
+            new TwigFunction('bs5_set_style', array($this, 'setStyle')),
+            new TwigFunction('bs5_get_style', array($this, 'getStyle')),
+            new TwigFunction('bs5_set_col_size', array($this, 'setColSize')),
+            new TwigFunction('bs5_get_col_size', array($this, 'getColSize')),
+            new TwigFunction('bs5_set_widget_col', array($this, 'setWidgetCol')),
+            new TwigFunction('bs5_get_widget_col', array($this, 'getWidgetCol')),
+            new TwigFunction('bs5_set_label_col', array($this, 'setLabelCol')),
+            new TwigFunction('bs5_get_label_col', array($this, 'getLabelCol')),
+            new TwigFunction('bs5_backup_form_settings', array($this, 'backupFormSettings')),
+            new TwigFunction('bs5_restore_form_settings', array($this, 'restoreFormSettings')),
             new TwigFunction(
-                'global_form_errors',
+                'bs5_global_form_errors',
                 null,
                 array('is_safe' => array('html'), 'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode')
             ),

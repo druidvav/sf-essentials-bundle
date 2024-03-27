@@ -1,4 +1,4 @@
-{% use "DvEssentialsBundle::base_layout.html.twig" %}
+{% use "DvEssentialsBundle::bs5_base_layout.html.twig" %}
 
 {# Widgets #}
 
@@ -321,8 +321,8 @@
 {# Rows #}
 
 {%- block form_row -%}
-    {% set style = style|default(get_style()) %}
-    {% set col_size = col_size|default(get_col_size()) %}
+    {% set style = style|default(bs5_get_style()) %}
+    {% set col_size = col_size|default(bs5_get_col_size()) %}
 
     {% if attr.label_col is defined and attr.label_col is not empty %}
         {% set label_col = attr.label_col %}
@@ -340,8 +340,8 @@
         {% set style = attr.style %}
     {% endif %}
 
-    {% set label_col = label_col|default(get_label_col()) %}
-    {% set widget_col = widget_col|default(get_widget_col()) %}
+    {% set label_col = label_col|default(bs5_get_label_col()) %}
+    {% set widget_col = widget_col|default(bs5_get_widget_col()) %}
 
     {%- set row_class = row_class|default(attr.class|default('mb-3')|trim) -%}
     {%- if style == 'horizontal' %}{%- set row_class = (row_class ~ ' row')|trim %}{% endif -%}
@@ -371,8 +371,8 @@
 {%- endblock form_row %}
 
 {%- block button_row -%}
-    {% set style = style|default(get_style()) %}
-    {% set col_size = col_size|default(get_col_size()) %}
+    {% set style = style|default(bs5_get_style()) %}
+    {% set col_size = col_size|default(bs5_get_col_size()) %}
 
     {% if attr.label_col is defined and attr.label_col is not empty %}
         {% set label_col = attr.label_col %}
@@ -390,8 +390,8 @@
         {% set style = attr.style %}
     {% endif %}
 
-    {% set label_col = label_col|default(get_label_col()) %}
-    {% set widget_col = widget_col|default(get_widget_col()) %}
+    {% set label_col = label_col|default(bs5_get_label_col()) %}
+    {% set widget_col = widget_col|default(bs5_get_widget_col()) %}
 
     {%- set row_class = row_class|default(attr.class|default('mb-3')|trim) -%}
     {%- if style == 'horizontal' %}{%- set row_class = (row_class ~ ' row')|trim %}{% endif -%}

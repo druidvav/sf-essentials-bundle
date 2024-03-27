@@ -18,29 +18,11 @@
     {% if label_col is defined %}
         {{ bs5_set_label_col(label_col) }}
     {% endif %}
-    {% if simple_col is defined %}
-        {{ bs5_set_simple_col(simple_col) }}
-    {% endif %}
     {{- parent() -}}
 {%- endblock form_start -%}
 
 {%- block form_end -%}
     {{- parent() -}}
-    {% if bs5_get_style() %}
-        {{ bs5_set_style('') }}
-    {% endif %}
-    {% if bs5_get_col_size() %}
-        {{ bs5_set_col_size('lg') }}
-    {% endif %}
-    {% if bs5_get_widget_col() %}
-        {{ bs5_set_widget_col(10) }}
-    {% endif %}
-    {% if bs5_get_label_col() %}
-        {{ bs5_set_label_col(2) }}
-    {% endif %}
-    {% if bs5_get_simple_col() %}
-        {{ bs5_set_simple_col(false) }}
-    {% endif %}
     {{ bs5_restore_form_settings() }}
 {%- endblock form_end -%}
 

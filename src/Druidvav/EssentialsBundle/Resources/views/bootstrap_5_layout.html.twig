@@ -321,6 +321,31 @@
 {# Rows #}
 
 {%- block form_row -%}
+    {% set style = style|default(bootstrap_get_style()) %}
+    {% set col_size = col_size|default(bootstrap_get_col_size()) %}
+
+    {% if attr.label_col is defined and attr.label_col is not empty %}
+        {% set label_col = attr.label_col %}
+    {% endif %}
+    {% if attr.widget_col is defined and attr.widget_col is not empty %}
+        {% set widget_col = attr.widget_col %}
+        {% if label is same as (false) and label_col is defined %}
+            {% set widget_col = widget_col + label_col %}
+        {% endif %}
+    {% endif %}
+    {% if attr.col_size is defined and attr.col_size is not empty %}
+        {% set col_size = attr.col_size %}
+    {% endif %}
+    {% if attr.style is defined and attr.style is not empty %}
+        {% set style = attr.style %}
+    {% endif %}
+
+    {% set label_col = label_col|default(bootstrap_get_label_col()) %}
+    {% set widget_col = widget_col|default(bootstrap_get_widget_col()) %}
+
+    {%- set row_class = row_class|default(attr.class|default('mb-3')|trim) -%}
+    {%- if style == 'horizontal' %}{%- set row_class = (row_class ~ ' row')|trim %}{% endif -%}
+
     {%- if compound is defined and compound -%}
         {%- set element = 'fieldset' -%}
     {%- endif -%}
@@ -328,23 +353,53 @@
 {#    {%- if help is not empty -%}#}
 {#        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}#}
 {#    {%- endif -%}#}
-    {%- set row_class = row_class|default(attr.class|default('mb-3')|trim) -%}
     <{{ element|default('div') }}{% with {attr: attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
     {%- if 'form-floating' in row_class -%}
         {{- form_widget(form, widget_attr) -}}
         {{- form_label(form) -}}
+{#        {{- form_help(form) -}}#}
+        {{- form_errors(form) -}}
     {%- else -%}
         {{- form_label(form) -}}
+        {%- if style == 'horizontal' %}<div class="col-{{ col_size }}-{{ widget_col }} {% if align_with_widget is defined or attr.align_with_widget is defined %}offset-{{ col_size }}-{{ label_col }}{% endif %}">{%- endif -%}
         {{- form_widget(form, widget_attr) -}}
+{#        {{- form_help(form) -}}#}
+        {{- form_errors(form) -}}
+        {%- if style == 'horizontal' %}</div>{%- endif -%}
     {%- endif -%}
-{#    {{- form_help(form) -}}#}
-    {{- form_errors(form) -}}
     </{{ element|default('div') }}>
 {%- endblock form_row %}
 
 {%- block button_row -%}
-    <div{% with {attr: attr|merge({class: attr.class|default('mb-3')|trim})} %}{{ block('attributes') }}{% endwith %}>
+    {% set style = style|default(bootstrap_get_style()) %}
+    {% set col_size = col_size|default(bootstrap_get_col_size()) %}
+
+    {% if attr.label_col is defined and attr.label_col is not empty %}
+        {% set label_col = attr.label_col %}
+    {% endif %}
+    {% if attr.widget_col is defined and attr.widget_col is not empty %}
+        {% set widget_col = attr.widget_col %}
+        {% if label is same as (false) and label_col is defined %}
+            {% set widget_col = widget_col + label_col %}
+        {% endif %}
+    {% endif %}
+    {% if attr.col_size is defined and attr.col_size is not empty %}
+        {% set col_size = attr.col_size %}
+    {% endif %}
+    {% if attr.style is defined and attr.style is not empty %}
+        {% set style = attr.style %}
+    {% endif %}
+
+    {% set label_col = label_col|default(bootstrap_get_label_col()) %}
+    {% set widget_col = widget_col|default(bootstrap_get_widget_col()) %}
+
+    {%- set row_class = row_class|default(attr.class|default('mb-3')|trim) -%}
+    {%- if style == 'horizontal' %}{%- set row_class = (row_class ~ ' row')|trim %}{% endif -%}
+
+    <div{% with {attr: attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
+        {%- if style == 'horizontal' %}<div class="col-{{ col_size }}-{{ widget_col }} {% if align_with_widget is defined or attr.align_with_widget is defined %}offset-{{ col_size }}-{{ label_col }}{% endif %}">{%- endif -%}
         {{- form_widget(form) -}}
+        {%- if style == 'horizontal' %}</div>{%- endif -%}
     </div>
 {%- endblock button_row %}
 

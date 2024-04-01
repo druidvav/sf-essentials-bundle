@@ -61,7 +61,7 @@
     {%- endif -%}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {%- if placeholder is not none -%}
-            <option value=""{% if placeholder_attr|default({}) %}{% with { attr: placeholder_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
         {%- endif -%}
         {%- if preferred_choices|length > 0 -%}
             {% set options = preferred_choices %}
@@ -89,7 +89,7 @@
                 {{- block('choice_widget_options') -}}
             </optgroup>
         {%- else -%}
-            <option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if not render_preferred_choices|default(false) and choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain) }}</option>
+            <option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if not render_preferred_choices|default(false) and choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
         {%- endif -%}
     {% endfor %}
 {%- endblock choice_widget_options -%}
@@ -202,7 +202,7 @@
 
 {%- block percent_widget -%}
     {%- set type = type|default('text') -%}
-    {{ block('form_widget_simple') }}{% if symbol %} {{ symbol|default('%') }}{% endif %}
+    {{ block('form_widget_simple') }}{# {% if symbol %} {{ symbol|default('%') }}{% endif %} #}
 {%- endblock percent_widget -%}
 
 {%- block password_widget -%}
@@ -236,9 +236,7 @@
             {% set label = name|humanize %}
         {%- endif -%}
     {%- endif -%}
-    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
-        {{- label|trans({}, translation_domain)|raw -}}
-    </button>
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ translation_domain is same as(false) or label is same as(false) ? label : label|trans({}, translation_domain) }}</button>
 {%- endblock button_widget -%}
 
 {%- block submit_widget -%}
@@ -342,11 +340,7 @@
 {%- endblock repeated_row -%}
 
 {%- block form_row -%}
-    {%- set widget_attr = {} -%}
-{#    {%- if help is not empty -%}#}
-{#        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}#}
-{#    {%- endif -%}#}
-    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+    <div>
         {{- form_label(form) -}}
         {{- form_errors(form) -}}
         {{- form_widget(form, widget_attr) -}}
@@ -355,7 +349,7 @@
 {%- endblock form_row -%}
 
 {%- block button_row -%}
-    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+    <div>
         {{- form_widget(form) -}}
     </div>
 {%- endblock button_row -%}

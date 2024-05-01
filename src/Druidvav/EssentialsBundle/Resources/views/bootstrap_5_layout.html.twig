@@ -339,7 +339,11 @@
     {% if attr.style is defined and attr.style is not empty %}
         {% set style = attr.style %}
     {% endif %}
-
+    {% if attr.help is defined and attr.help is not empty %}
+        {% set help = attr.help %}
+    {% else %}
+        {% set help = null %}
+    {% endif %}
     {% set label_col = label_col|default(bs5_get_label_col()) %}
     {% set widget_col = widget_col|default(bs5_get_widget_col()) %}
 
@@ -350,20 +354,20 @@
         {%- set element = 'fieldset' -%}
     {%- endif -%}
     {%- set widget_attr = {} -%}
-{#    {%- if help is not empty -%}#}
-{#        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}#}
-{#    {%- endif -%}#}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
     <{{ element|default('div') }}{% with {attr: attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
     {%- if 'form-floating' in row_class -%}
         {{- form_widget(form, widget_attr) -}}
         {{- form_label(form) -}}
-{#        {{- form_help(form) -}}#}
+        {{ block('form_help') }}
         {{- form_errors(form) -}}
     {%- else -%}
         {{- form_label(form) -}}
         {%- if style == 'horizontal' %}<div class="col-{{ col_size }}-{{ widget_col }} {% if align_with_widget is defined or attr.align_with_widget is defined %}offset-{{ col_size }}-{{ label_col }}{% endif %}">{%- endif -%}
         {{- form_widget(form, widget_attr) -}}
-{#        {{- form_help(form) -}}#}
+        {{ block('form_help') }}
         {{- form_errors(form) -}}
         {%- if style == 'horizontal' %}</div>{%- endif -%}
     {%- endif -%}
@@ -415,15 +419,17 @@
 
 {# Help #}
 
-{#{%- block form_help -%}#}
-{#    {% set row_class = attr.class|default('') %}#}
-{#    {% set help_class = ' form-text' %}#}
-{#    {% if 'input-group' in row_class %}#}
-{#        #}{#- Hack to properly display help with input group -#}
-{#        {% set help_class = ' input-group-text' %}#}
-{#    {% endif %}#}
-{#    {%- if help is not empty -%}#}
-{#        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ help_class ~ ' mb-0')|trim}) -%}#}
-{#    {%- endif -%}#}
-{#    {{- parent() -}}#}
-{#{%- endblock form_help %}#}
+{%- block form_help -%}
+    {% set help_attr = { } %}
+    {% set help_html = false %}
+    {% set row_class = attr.class|default('') %}
+    {% set help_class = ' form-text' %}
+    {% if 'input-group' in row_class %}
+        - Hack to properly display help with input group -
+        {% set help_class = ' input-group-text' %}
+    {% endif %}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ help_class ~ ' mb-0')|trim}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock form_help %}

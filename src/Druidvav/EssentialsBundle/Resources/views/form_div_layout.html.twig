@@ -304,30 +304,32 @@
 
 {# Help #}
 
-{#{% block form_help -%}#}
-{#    {%- if help is not empty -%}#}
-{#        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-text')|trim}) -%}#}
-{#        <{{ element|default('div') }} id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>#}
-{#        {{- block('form_help_content') -}}#}
-{#        </{{ element|default('div') }}>#}
-{#    {%- endif -%}#}
-{#{%- endblock form_help %}#}
+{% block form_help -%}
+    {%- if help is not empty -%}
+        {%- set help_attr = { } -%}
+        {%- set help_html = false -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-text')|trim}) -%}
+        <{{ element|default('div') }} id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+        {{- block('form_help_content') -}}
+        </{{ element|default('div') }}>
+    {%- endif -%}
+{%- endblock form_help %}
 
-{#{% block form_help_content -%}#}
-{#    {%- if translation_domain is same as(false) -%}#}
-{#        {%- if help_html is same as(false) -%}#}
-{#            {{- help -}}#}
-{#        {%- else -%}#}
-{#            {{- help|raw -}}#}
-{#        {%- endif -%}#}
-{#    {%- else -%}#}
-{#        {%- if help_html is same as(false) -%}#}
-{#            {{- help|trans(help_translation_parameters, translation_domain) -}}#}
-{#        {%- else -%}#}
-{#            {{- help|trans(help_translation_parameters, translation_domain)|raw -}}#}
-{#        {%- endif -%}#}
-{#    {%- endif -%}#}
-{#{%- endblock form_help_content %}#}
+{% block form_help_content -%}
+    {%- if translation_domain is same as(false) -%}
+        {%- if help_html is same as(false) -%}
+            {{- help -}}
+        {%- else -%}
+            {{- help|raw -}}
+        {%- endif -%}
+    {%- else -%}
+        {%- if help_html is same as(false) -%}
+            {{- help|trans({ }, translation_domain) -}}
+        {%- else -%}
+            {{- help|trans({ }, translation_domain)|raw -}}
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_help_content %}
 
 {# Rows #}
 
@@ -344,7 +346,7 @@
         {{- form_label(form) -}}
         {{- form_errors(form) -}}
         {{- form_widget(form, widget_attr) -}}
-{#        {{- form_help(form) -}}#}
+        {{ block('form_help') }}
     </div>
 {%- endblock form_row -%}
 
@@ -445,7 +447,7 @@
 {%- endblock button_attributes -%}
 
 {% block attributes -%}
-    {%- for attrname, attrvalue in attr -%}
+    {%- for attrname, attrvalue in attr|filter((v, k) => k != 'help') -%}
         {{- " " -}}
         {%- if attrname in ['placeholder', 'title'] -%}
             {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans({}, translation_domain) }}"

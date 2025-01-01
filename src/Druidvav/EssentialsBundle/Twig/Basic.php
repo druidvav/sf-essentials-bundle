@@ -91,15 +91,12 @@ class Basic extends AbstractExtension
 
     public function formatDateSmart($date, $format = ''): string
     {
-        if (is_object($date) && is_a($date, 'DateTime')) {
-            /* @var $date DateTime */
-            $date = $date->getTimestamp();
-        } elseif (!is_numeric($date)) {
-            $date = strtotime($date);
+        if (!is_object($date) || !is_a($date, 'DateTime')) {
+            $date = new DateTime($date);
         }
 
         $locale = $this->getTranslator()->getLocale();
-        $currentYear = date('Y', $date) == date('Y');
+        $currentYear = $date->format('Y') == date('Y');
         $dateMode = $format == 'long' || $currentYear ? IntlDateFormatter::LONG : IntlDateFormatter::MEDIUM;
         $formatter = IntlDateFormatter::create($locale, $dateMode, IntlDateFormatter::NONE);
         $pattern = $formatter->getPattern();
@@ -111,24 +108,21 @@ class Basic extends AbstractExtension
         }
 
         $formatter->setPattern($pattern);
-        $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
+        $formatter->setTimeZone($date->getTimezone());
         return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0\xE2\x80\xAF");
     }
 
     public function formatDatePattern($date, $pattern)
     {
-        if (is_object($date) && is_a($date, 'DateTime')) {
-            /* @var $date DateTime */
-            $date = $date->getTimestamp();
-        } elseif (!is_numeric($date)) {
-            $date = strtotime($date);
+        if (!is_object($date) || !is_a($date, 'DateTime')) {
+            $date = new DateTime($date);
         }
 
         $locale = $this->getTranslator()->getLocale();
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
         $formatter->setPattern($pattern);
-        $formatter->setTimeZone(IntlTimeZone::createTimeZone('GMT+0300'));
-        return $formatter->format($date);
+        $formatter->setTimeZone($date->getTimezone());
+        return $formatter->format($date->getTimezone());
     }
 
     public function arrayPrint($string)

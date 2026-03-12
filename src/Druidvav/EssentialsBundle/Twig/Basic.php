@@ -122,7 +122,7 @@ class Basic extends AbstractExtension
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
         $formatter->setPattern($pattern);
         $formatter->setTimeZone($date->getTimezone());
-        return $formatter->format($date->getTimezone());
+        return $formatter->format($date);
     }
 
     public function arrayPrint($string)

@@ -3,7 +3,7 @@ namespace Druidvav\EssentialsBundle;
 
 use Doctrine\ORM\EntityManager;
 use LogicException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class Controller extends BaseController
@@ -17,11 +17,11 @@ abstract class Controller extends BaseController
 
     protected function getFlash($type)
     {
-        if (!$this->container->has('session')) {
+        if (!$this->has('session')) {
             throw new LogicException('You can not use the addFlash method if sessions are disabled.');
         }
 
-        return $this->container->get('session')->getFlashBag()->get($type);
+        return $this->get('session')->getFlashBag()->get($type);
     }
 
     /**

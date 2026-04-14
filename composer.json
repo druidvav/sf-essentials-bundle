@@ -16,8 +16,7 @@
     "symfony/dependency-injection": "^3.4|^4.0",
     "symfony/translation": "^3.4|^4.0",
     "symfony/framework-bundle": "^3.4|^4.0",
-    "symfony/twig-bundle": "^3.4|^4.0",
-    "sentry/sentry": "^1.5.0"
+    "symfony/twig-bundle": "^3.4|^4.0"
   },
   "suggest": {
     "ext-pcntl": "Required to use some cool doctrine feature with my lib."

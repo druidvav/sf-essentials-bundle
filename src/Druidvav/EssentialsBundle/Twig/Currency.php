@@ -5,7 +5,7 @@ namespace Druidvav\EssentialsBundle\Twig;
 use DateTime;
 use Locale;
 use NumberFormatter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -66,16 +66,16 @@ class Currency extends AbstractExtension
         for ($i = count($result) - 1; $i >= 0; $i--) {
             $strResult .= $this->toWords($result[$i], $i === 1);
             if ($i !== 0) {
-                $strResult .= ' '.$this->translator->transChoice('number.unit.'.pow(1000, $i), $result[$i], [], 'numbers');
+                $strResult .= ' '.$this->translator->trans('number.unit.'.pow(1000, $i), ['%count%' => $result[$i]], 'numbers');
             }
         }
 
         if ($intPart !== 0) {
-            $strResult .= ' '.$this->translator->transChoice('number.unit.currency', abs($intPart), [], 'numbers');
+            $strResult .= ' '.$this->translator->trans('number.unit.currency', ['%count%' => abs($intPart)], 'numbers');
         }
 
         if ($decimalPart > 0) {
-            $strResult .= ' '.$this->toWords($decimalPart, true).' '.$this->translator->transChoice('number.unit.small_currency', $decimalPart, [], 'numbers');
+            $strResult .= ' '.$this->toWords($decimalPart, true).' '.$this->translator->trans('number.unit.small_currency', ['%count%' => $decimalPart], 'numbers');
         }
 
         return $strResult;
@@ -89,9 +89,9 @@ class Currency extends AbstractExtension
         return sprintf(
             '%s %s %s %s',
             $intPart,
-            $this->translator->transChoice('number.unit.currency', $intPart, [], 'numbers'),
+            $this->translator->trans('number.unit.currency', ['%count%' => $intPart], 'numbers'),
             str_pad($decimalPart, 2, '0', STR_PAD_LEFT),
-            $this->translator->transChoice('number.unit.small_currency', $decimalPart, [], 'numbers')
+            $this->translator->trans('number.unit.small_currency', ['%count%' => $decimalPart], 'numbers')
         );
     }
 

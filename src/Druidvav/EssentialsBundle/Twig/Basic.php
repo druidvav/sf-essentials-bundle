@@ -4,15 +4,15 @@ namespace Druidvav\EssentialsBundle\Twig;
 use DateTime;
 use IntlTimeZone;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use IntlDateFormatter;
-use Symfony\Component\Translation\TranslatorInterface;
 use Twig\TwigFunction;
 use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
 
 class Basic extends AbstractExtension
 {
-    protected $translator;
+    protected TranslatorInterface $translator;
     protected $kernel;
 
     public function setTranslator(TranslatorInterface $translator)
@@ -77,10 +77,10 @@ class Basic extends AbstractExtension
         $diff = $date - time();
         if (abs($diff) <= 3600) {
             $diffInt = ceil(abs($diff) / 60);
-            $int = $this->getTranslator()->transChoice('general.minutes', $diffInt);
+            $int = $this->getTranslator()->trans('general.minutes', ['%count%' => $diffInt]);
         } elseif (abs($diff) <= 36 * 3600) {
             $diffInt = ceil(abs($diff) / 3600);
-            $int = $this->getTranslator()->transChoice('general.hours', $diffInt);
+            $int = $this->getTranslator()->trans('general.hours', ['%count%' => $diffInt]);
         }
         if (!empty($int) && !empty($diffInt)) {
             return $this->getTranslator()->trans($diff < 0 ? 'general.period_ago' : 'general.period_in', [ '%str%' => $diffInt . ' ' . $int ]);

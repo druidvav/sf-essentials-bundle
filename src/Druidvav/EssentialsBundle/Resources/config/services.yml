@@ -1,3 +1,6 @@
+parameters:
+  dv_essentials.grunt_asset_manifest_path: '%kernel.project_dir%/config/assets.json'
+
 services:
   essentials.listener.command_exception:
     class: Druidvav\EssentialsBundle\EventListener\ConsoleErrorListener
@@ -12,6 +15,7 @@ services:
     calls:
       - [ setTranslator, [ "@translator" ] ]
       - [ setKernel, [ "@kernel" ] ]
+      - [ setGruntAssetManifestPath, [ "%dv_essentials.grunt_asset_manifest_path%" ] ]
     tags: [ "twig.extension" ]
   Druidvav\EssentialsBundle\Twig\Currency:
     calls:

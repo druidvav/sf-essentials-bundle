@@ -14,6 +14,7 @@ class Basic extends AbstractExtension
 {
     protected TranslatorInterface $translator;
     protected $kernel;
+    protected string $gruntAssetManifestPath = '';
 
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -33,6 +34,16 @@ class Basic extends AbstractExtension
     public function setKernel(Kernel $kernel)
     {
         $this->kernel = $kernel;
+    }
+
+    public function getGruntAssetManifestPath(): string
+    {
+        return $this->gruntAssetManifestPath;
+    }
+
+    public function setGruntAssetManifestPath(string $gruntAssetManifestPath)
+    {
+        $this->gruntAssetManifestPath = $gruntAssetManifestPath;
     }
 
     public function getFilters(): array
@@ -75,15 +86,13 @@ class Basic extends AbstractExtension
         }
 
         $diff = $date - time();
+        $direction = $diff < 0 ? 'ago' : 'in';
         if (abs($diff) <= 3600) {
             $diffInt = ceil(abs($diff) / 60);
-            $int = $this->getTranslator()->trans('general.minutes', ['%count%' => $diffInt]);
+            return $this->getTranslator()->trans('diff.'.$direction.'.minute', ['%count%' => $diffInt], 'date');
         } elseif (abs($diff) <= 36 * 3600) {
             $diffInt = ceil(abs($diff) / 3600);
-            $int = $this->getTranslator()->trans('general.hours', ['%count%' => $diffInt]);
-        }
-        if (!empty($int) && !empty($diffInt)) {
-            return $this->getTranslator()->trans($diff < 0 ? 'general.period_ago' : 'general.period_in', [ '%str%' => $diffInt . ' ' . $int ]);
+            return $this->getTranslator()->trans('diff.'.$direction.'.hour', ['%count%' => $diffInt], 'date');
         }
 
         return $this->formatDateSmart($date, $format);
@@ -132,7 +141,7 @@ class Basic extends AbstractExtension
 
     public function gruntAsset($string): string
     {
-        $assetsFilename = $this->getKernel()->getProjectDir() . '/app/assets.json';
+        $assetsFilename = $this->getGruntAssetManifestPath();
         if (file_exists($assetsFilename)) {
             $data = file_get_contents($assetsFilename);
             if (empty($data)) return '/' . $string;

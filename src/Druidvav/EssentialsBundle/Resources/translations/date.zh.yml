@@ -1,0 +1,16 @@
+diff:
+    ago:
+        second: '{0} 0秒前|{1} 1秒前|]1,Inf] %count%秒前'
+        minute: '{0} 0分钟前|{1} 1分钟前|]1,Inf] %count%分钟前'
+        hour: '{0} 0小时前|{1} 1小时前|]1,Inf] %count%小时前'
+        day: '{0} 0天前|{1} 1天前|]1,Inf] %count%天前'
+        month: '{0} 0个月前|{1} 1个月前|]1,Inf] %count%个月前'
+        year: '{0} 0年前|{1} 1年前|]1,Inf] %count%年前'
+    in:
+        second: '{0} 0秒后|{1} 1秒后|]1,Inf] %count%秒后'
+        minute: '{0} 0分钟后|{1} 1分钟后|]1,Inf] %count%分钟后'
+        hour: '{0} 0小时后|{1} 1小时后|]1,Inf] %count%小时后'
+        day: '{0} 0天后|{1} 1天后|]1,Inf] %count%天后'
+        month: '{0} 0个月后|{1} 1个月后|]1,Inf] %count%个月后'
+        year: '{0} 0年后|{1} 1年后|]1,Inf] %count%年后'
+

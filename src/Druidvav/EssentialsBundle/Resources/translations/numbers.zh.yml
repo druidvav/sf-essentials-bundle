@@ -1,4 +1,5 @@
 number:
+    minus: '负'
     1_other: '一'
     2_other: '二'
     1: '一'

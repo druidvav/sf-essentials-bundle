@@ -60,7 +60,7 @@ class Currency extends AbstractExtension
         $strResult = '';
 
         if ($sum < 0) {
-            $strResult .= 'минус ';
+            $strResult .= $this->translator->trans('number.minus', [], 'numbers').' ';
         }
 
         for ($i = count($result) - 1; $i >= 0; $i--) {

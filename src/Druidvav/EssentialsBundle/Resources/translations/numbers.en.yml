@@ -1,4 +1,5 @@
 number:
+    minus: 'minus'
     1_other: 'one'
     2_other: 'two'
     1: 'one'

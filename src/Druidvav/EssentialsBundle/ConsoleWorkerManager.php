@@ -126,7 +126,7 @@ class ConsoleWorkerManager
     protected function startProcess($pi)
     {
         $process = &$this->processes[$pi]['process'];
-        $process = new Process($this->processes[$pi]['command']);
+        $process = Process::fromShellCommandline($this->processes[$pi]['command']);
         $process->start();
         $pid = $process->getPid();
         $this->logger->info("{$this->processes[$pi]['title']} started, pid=$pid");

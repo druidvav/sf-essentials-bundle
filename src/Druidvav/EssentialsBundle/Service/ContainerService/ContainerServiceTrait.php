@@ -2,7 +2,7 @@
 namespace Druidvav\EssentialsBundle\Service\ContainerService;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use LogicException;

@@ -9,8 +9,6 @@ services:
       - { name: kernel.event_listener, event: console.error }
   essentials.monolog.activation_strategy:
     class: Druidvav\EssentialsBundle\Monolog\CustomActivationStrategy
-    calls:
-      - [setContainer, ['@service_container'] ]
   Druidvav\EssentialsBundle\Twig\Basic:
     calls:
       - [ setTranslator, [ "@translator" ] ]

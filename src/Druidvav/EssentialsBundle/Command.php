@@ -59,7 +59,7 @@ abstract class Command extends BaseCommand implements ContainerInterface
 
     protected function checkRunning($command)
     {
-        $process = new Process('ps auxww | grep "console ' . $command . ' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
+        $process = Process::fromShellCommandline('ps auxww | grep "console ' . $command . ' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
         $process->start();
         while ($process->isRunning()) {
             // waiting for process to finish

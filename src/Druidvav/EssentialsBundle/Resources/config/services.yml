@@ -7,8 +7,6 @@ services:
     arguments: ['@logger']
     tags:
       - { name: kernel.event_listener, event: console.error }
-  essentials.monolog.activation_strategy:
-    class: Druidvav\EssentialsBundle\Monolog\CustomActivationStrategy
   Druidvav\EssentialsBundle\Twig\Basic:
     calls:
       - [ setTranslator, [ "@translator" ] ]

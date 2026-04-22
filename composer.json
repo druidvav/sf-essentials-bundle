@@ -27,5 +27,13 @@
     "symfony/console": "^4.4|^5.0",
     "doctrine/doctrine-bundle": "^1.4|^2.0",
     "doctrine/orm": "~2.4,>=2.4.5"
+  },
+  "scripts": {
+    "tools:install": "composer --working-dir=tools install",
+    "stan": "composer --working-dir=tools phpstan",
+    "rector": "composer --working-dir=tools rector:dry-run",
+    "rector:fix": "composer --working-dir=tools rector",
+    "cs": "composer --working-dir=tools cs",
+    "cs:fix": "composer --working-dir=tools cs:fix"
   }
 }

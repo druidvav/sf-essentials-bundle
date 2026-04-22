@@ -1,9 +1,11 @@
 <?php
+
 /**
  * We'll assume that is internal library :)
  */
 /** @noinspection PhpUnusedParameterInspection */
 /** @noinspection PhpStatementHasEmptyBodyInspection */
+
 namespace Druidvav\EssentialsBundle;
 
 use Druidvav\EssentialsBundle\Service\ContainerService;
@@ -59,29 +61,26 @@ abstract class Command extends BaseCommand implements ContainerInterface
 
     protected function checkRunning($command)
     {
-        $process = Process::fromShellCommandline('ps auxww | grep "console ' . $command . ' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
+        $process = Process::fromShellCommandline('ps auxww | grep "console '.$command.' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
         $process->start();
         while ($process->isRunning()) {
             // waiting for process to finish
         }
-        if (intval($process->getOutput()) > 1) {
-            $this->getLogger()->info($command . ' is already running');
+        if ((int) $process->getOutput() > 1) {
+            $this->getLogger()->info($command.' is already running');
             exit;
         }
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param $task
      * @throws Exception
      */
     protected function executeTask(InputInterface $input, OutputInterface $output, $task)
     {
         $log = $this->getLogger();
-        $log->info('Running ' . $task . '...');
+        $log->info('Running '.$task.'...');
         $command = $this->getApplication()->find($task);
-        $command->run(new ArrayInput([ ]), $output);
-        $log->info('Finished ' . $task . '!');
+        $command->run(new ArrayInput([]), $output);
+        $log->info('Finished '.$task.'!');
     }
 }

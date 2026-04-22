@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -6,19 +7,18 @@ use Twig\TwigFilter;
 
 class Autolink extends AbstractExtension
 {
-    /**
-     * {@inheritDoc}
-     */
     public function getFilters(): array
     {
         return [
-            'autolink' => new TwigFilter('autolink', [$this, 'autoLink'], [ 'pre_escape' => 'html', 'is_safe' => [ 'html' ] ]),
+            'autolink' => new TwigFilter('autolink', [$this, 'autoLink'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         ];
     }
 
     /**
      * Replace URLs in message with HTML link elements.
+     *
      * @param string $string The original message.
+     *
      * @return string The message with URLs replaced with anchors.
      */
     public function autoLink(string $string): string
@@ -30,6 +30,7 @@ class Autolink extends AbstractExtension
             $replace = sprintf($anchor, $match[0], $match[0]);
             $string = str_replace($match[0], $replace, $string);
         }
+
         return $string;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Service\ContainerService;
 
 use Druidvav\EssentialsBundle\ContainerAwareTrait;

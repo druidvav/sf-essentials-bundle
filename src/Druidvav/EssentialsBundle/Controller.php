@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle;
 
 use Doctrine\ORM\EntityManager;

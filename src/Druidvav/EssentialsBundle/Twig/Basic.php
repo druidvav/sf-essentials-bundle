@@ -1,14 +1,14 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Twig;
 
 use DateTime;
-use IntlTimeZone;
+use IntlDateFormatter;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use IntlDateFormatter;
-use Twig\TwigFunction;
-use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class Basic extends AbstractExtension
 {
@@ -89,9 +89,11 @@ class Basic extends AbstractExtension
         $direction = $diff < 0 ? 'ago' : 'in';
         if (abs($diff) <= 3600) {
             $diffInt = ceil(abs($diff) / 60);
+
             return $this->getTranslator()->trans('diff.'.$direction.'.minute', ['%count%' => $diffInt], 'date');
         } elseif (abs($diff) <= 36 * 3600) {
             $diffInt = ceil(abs($diff) / 3600);
+
             return $this->getTranslator()->trans('diff.'.$direction.'.hour', ['%count%' => $diffInt], 'date');
         }
 
@@ -106,18 +108,19 @@ class Basic extends AbstractExtension
 
         $locale = $this->getTranslator()->getLocale();
         $currentYear = $date->format('Y') == date('Y');
-        $dateMode = $format == 'long' || $currentYear ? IntlDateFormatter::LONG : IntlDateFormatter::MEDIUM;
+        $dateMode = 'long' == $format || $currentYear ? IntlDateFormatter::LONG : IntlDateFormatter::MEDIUM;
         $formatter = IntlDateFormatter::create($locale, $dateMode, IntlDateFormatter::NONE);
         $pattern = $formatter->getPattern();
 
         if ($currentYear) {
-            $pattern = trim(str_replace([ ', y', 'y', '\'г\'.', 'թ.' ], '', $pattern));
+            $pattern = trim(str_replace([', y', 'y', '\'г\'.', 'թ.'], '', $pattern));
         } else {
-            $pattern = str_replace([ '\'г\'.', 'թ.' ], '', $pattern);
+            $pattern = str_replace(['\'г\'.', 'թ.'], '', $pattern);
         }
 
         $formatter->setPattern($pattern);
         $formatter->setTimeZone($date->getTimezone());
+
         return trim($formatter->format($date), " \t\n\r\0\x0B\xC2\xA0\xE2\x80\xAF");
     }
 
@@ -131,6 +134,7 @@ class Basic extends AbstractExtension
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
         $formatter->setPattern($pattern);
         $formatter->setTimeZone($date->getTimezone());
+
         return $formatter->format($date);
     }
 
@@ -144,15 +148,20 @@ class Basic extends AbstractExtension
         $assetsFilename = $this->getGruntAssetManifestPath();
         if (file_exists($assetsFilename)) {
             $data = file_get_contents($assetsFilename);
-            if (empty($data)) return '/' . $string;
+            if (empty($data)) {
+                return '/'.$string;
+            }
             $assets = json_decode($data, true);
-            if (empty($assets)) return '/' . $string;
+            if (empty($assets)) {
+                return '/'.$string;
+            }
             foreach ($assets as $asset) {
                 if ($asset['originalPath'] == $string) {
-                    return '/' . $asset['versionedPath'];
+                    return '/'.$asset['versionedPath'];
                 }
             }
         }
-        return '/' . $string;
+
+        return '/'.$string;
     }
 }

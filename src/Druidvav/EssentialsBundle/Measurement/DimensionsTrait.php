@@ -1,22 +1,24 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Measurement;
 
 /**
  * Dimensions trait for Doctrine Entities
- * @package Druidvav\EssentialsBundle\Measurement
+ *
  * @property int $dimensionX mm
  * @property int $dimensionY mm
  * @property int $dimensionZ mm
+ *
  * @noinspection PhpUnused
  */
 trait DimensionsTrait
 {
-    public abstract function getLengthSystem(): string;
+    abstract public function getLengthSystem(): string;
 
-    public function setDimensions(Dimensions $decorator = null): bool
+    public function setDimensions(?Dimensions $decorator = null): bool
     {
         $changed = false;
-        if ($decorator === null) {
+        if (null === $decorator) {
             if (null != $this->dimensionX || null != $this->dimensionY || null != $this->dimensionZ) {
                 $changed = true;
             }
@@ -33,6 +35,7 @@ trait DimensionsTrait
             $this->dimensionY = $decorator->getMmY();
             $this->dimensionZ = $decorator->getMmZ();
         }
+
         return $changed;
     }
 

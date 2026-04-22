@@ -1,14 +1,15 @@
 <?php
+
 namespace Druidvav\EssentialsBundle;
 
 class Translit
 {
-    const TR_NO_SLASHES = 0;
-    const TR_ALLOW_SLASHES = 1;
-    const TR_ENCODE = 0;
-    const TR_DECODE = 1;
+    public const TR_NO_SLASHES = 0;
+    public const TR_ALLOW_SLASHES = 1;
+    public const TR_ENCODE = 0;
+    public const TR_DECODE = 1;
 
-    const TRANSLITERATION_MAP = [
+    public const TRANSLITERATION_MAP = [
         // RUSSIAN
         'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e', 'ж' => 'zh', 'з' => 'z',
         'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ё' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
@@ -26,46 +27,45 @@ class Translit
     /**
      * Преобразует строку в транслит (URI валидный)
      *
-     * @param string $string строка для преобразования
-     * @param int $allow_slashes разрешены ли слеши
-     * @return string
+     * @param string $string        строка для преобразования
+     * @param int    $allow_slashes разрешены ли слеши
      */
     public static function url($string, $allow_slashes = self::TR_NO_SLASHES): string
     {
         $string = preg_replace("#([^\s]+)\'#usi", '\1', $string);
         $string = preg_replace('#[\s+\-\:\;\'\"]#usi', ' ', $string);
 
-        $slash = "";
+        $slash = '';
         if ($allow_slashes) {
             $slash = '\/';
         }
 
         static $LettersFrom = 'а б в г д е з и к л м н о п р с т у ф ы э й х ё';
-        static $LettersTo   = 'a b v g d e z i k l m n o p r s t u f y e j x e';
-        //static $Consonant = 'бвгджзйклмнпрстфхцчшщ';
+        static $LettersTo = 'a b v g d e z i k l m n o p r s t u f y e j x e';
+        // static $Consonant = 'бвгджзйклмнпрстфхцчшщ';
         static $Vowel = 'аеёиоуыэюя';
         static $BiLetters = array(
-            "ж" => "zh", "ц"=>"ts", "ч" => "ch",
-            "ш" => "sh", "щ" => "sch", "ю" => "yu", "я" => "ya",
+            'ж' => 'zh', 'ц' => 'ts', 'ч' => 'ch',
+            'ш' => 'sh', 'щ' => 'sch', 'ю' => 'yu', 'я' => 'ya',
         );
 
         $string = preg_replace('/[_\s\.,?!\[\](){}]+/', '-', $string);
-        $string = preg_replace("/-{2,}/", "--", $string);
-        $string = preg_replace("/_-+_/", "--", $string);
+        $string = preg_replace('/-{2,}/', '--', $string);
+        $string = preg_replace('/_-+_/', '--', $string);
         $string = preg_replace('/[_\-]+$/', '', $string);
 
         $string = mb_strtolower($string, 'UTF-8');
 
-        //here we replace ъ/ь
-        $string = preg_replace("/(ь|ъ)([".$Vowel."])/", "j\\2", $string);
-        $string = preg_replace("/(ь|ъ)/", "", $string);
+        // here we replace ъ/ь
+        $string = preg_replace('/(ь|ъ)(['.$Vowel.'])/', 'j\\2', $string);
+        $string = preg_replace('/(ь|ъ)/', '', $string);
 
-        //transliterating
-        $string = str_replace(explode(' ', $LettersFrom),  explode(' ', $LettersTo), $string);
+        // transliterating
+        $string = str_replace(explode(' ', $LettersFrom), explode(' ', $LettersTo), $string);
         $string = str_replace(array_keys($BiLetters), array_values($BiLetters), $string);
 
-        $string = preg_replace("/j{2,}/", "j", $string);
-        $string = preg_replace('/[^' . $slash . '0-9a-z_\-]+/', "-", $string);
+        $string = preg_replace('/j{2,}/', 'j', $string);
+        $string = preg_replace('/[^'.$slash.'0-9a-z_\-]+/', '-', $string);
 
         $string = preg_replace('/^[_\-]+/', '', $string);
         $string = preg_replace('/[_\-]+$/', '', $string);
@@ -77,12 +77,13 @@ class Translit
     public static function text($string)
     {
         foreach (self::TRANSLITERATION_MAP as $from => $to) {
-            if (mb_strlen($to) != 1 && $from == mb_strtoupper($from)) {
-                $string = preg_replace('#' . $from . '(\p{Lu})#u', mb_strtoupper($to) . '$1', $string);
-                $string = preg_replace('#(\p{Lu})' . $from . '(\s|$)#u', '$1' . mb_strtoupper($to) . '$2', $string);
+            if (1 != mb_strlen($to) && $from == mb_strtoupper($from)) {
+                $string = preg_replace('#'.$from.'(\p{Lu})#u', mb_strtoupper($to).'$1', $string);
+                $string = preg_replace('#(\p{Lu})'.$from.'(\s|$)#u', '$1'.mb_strtoupper($to).'$2', $string);
             }
             $string = str_replace($from, $to, $string);
         }
-        return iconv('UTF-8' , 'ASCII//TRANSLIT', $string);
+
+        return iconv('UTF-8', 'ASCII//TRANSLIT', $string);
     }
 }

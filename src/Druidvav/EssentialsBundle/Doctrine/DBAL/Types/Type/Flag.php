@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Doctrine\DBAL\Types\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -6,7 +7,7 @@ use Doctrine\DBAL\Types\Type;
 
 class Flag extends Type
 {
-    const FLAG = 'flag';
+    public const FLAG = 'flag';
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -15,22 +16,22 @@ class Flag extends Type
 
     /**
      * @param string|null $value
-     * @param AbstractPlatform $platform
-     * @return boolean|null
+     *
+     * @return bool|null
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value === null ? null : $value == 'y';
+        return null === $value ? null : 'y' == $value;
     }
 
     /**
-     * @param boolean $value
-     * @param AbstractPlatform $platform
+     * @param bool $value
+     *
      * @return string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return $value === null ? null : ($value ? 'y' : 'n');
+        return null === $value ? null : ($value ? 'y' : 'n');
     }
 
     public function getName()

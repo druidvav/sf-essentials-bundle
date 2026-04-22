@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle;
 
 use SimpleXMLElement;
@@ -10,7 +11,9 @@ class XmlArrayTools
         $out = [];
         if ($xmlElement->attributes()) {
             $out['@attributes'] = [];
-            foreach ($xmlElement->attributes() as $key => $value) $out['@attributes'][$key] = $value->__toString();
+            foreach ($xmlElement->attributes() as $key => $value) {
+                $out['@attributes'][$key] = $value->__toString();
+            }
         }
         $multiTagMap = [];
         foreach ($xmlElement->children() as $child) {
@@ -21,16 +24,23 @@ class XmlArrayTools
                         self::parseXmlElement($child),
                     ];
                     $multiTagMap[$child->getName()] = true;
-                } else $out[$child->getName()][] = self::parseXmlElement($child);
+                } else {
+                    $out[$child->getName()][] = self::parseXmlElement($child);
+                }
             } else {
                 $out[$child->getName()] = self::parseXmlElement($child);
             }
         }
-        if (count($out) == 1 && isset($out['@attributes'])) {
+        if (1 == count($out) && isset($out['@attributes'])) {
             $body = $xmlElement->__toString();
-            if ($body) $out[] = $body;
+            if ($body) {
+                $out[] = $body;
+            }
         }
-        if (count($out) == 0) return $xmlElement->__toString();
+        if (0 == count($out)) {
+            return $xmlElement->__toString();
+        }
+
         return $out;
     }
 
@@ -40,15 +50,20 @@ class XmlArrayTools
             $xml = str_replace(["\r\n", "\n", "\t"], '', $xml);
             $xml = simplexml_load_string($xml);
         }
-        if ($xml) return self::parseXmlElement($xml);
-        else return [];
+        if ($xml) {
+            return self::parseXmlElement($xml);
+        }
+
+        return [];
     }
 
     public static function arrayToXml($array): string
     {
         $xmlResult = '';
         foreach ($array as $key => $value) {
-            if ($key === '@attributes' || $key === 'tag') continue;
+            if ('@attributes' === $key || 'tag' === $key) {
+                continue;
+            }
             $xmlStruct = array();
             if (isset($value['tag'])) {
                 $xmlStruct['tag'] = $value['tag'];
@@ -76,11 +91,12 @@ class XmlArrayTools
             $propertiesString = '';
             if (!empty($xmlStruct['@attributes'])) {
                 foreach ($xmlStruct['@attributes'] as $attributeName => $attributeValue) {
-                    $propertiesString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue, ENT_QUOTES|ENT_HTML5, 'UTF-8') . '" ';
+                    $propertiesString .= ' '.$attributeName.'="'.htmlspecialchars($attributeValue, ENT_QUOTES | ENT_HTML5, 'UTF-8').'" ';
                 }
             }
-            $xmlResult .= '<' . $xmlStruct['tag'] . $propertiesString . ((!empty($xmlStruct['body']) || $xmlStruct['body'] === '0') ? '>' . $xmlStruct['body'] . '</' . $xmlStruct['tag'] . '>' : '/>');
+            $xmlResult .= '<'.$xmlStruct['tag'].$propertiesString.((!empty($xmlStruct['body']) || '0' === $xmlStruct['body']) ? '>'.$xmlStruct['body'].'</'.$xmlStruct['tag'].'>' : '/>');
         }
+
         return $xmlResult;
     }
 }

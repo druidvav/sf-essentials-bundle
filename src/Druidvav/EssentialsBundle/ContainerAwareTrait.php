@@ -1,5 +1,7 @@
 <?php
+
 /** @noinspection PhpMissingFieldTypeInspection */
+
 namespace Druidvav\EssentialsBundle;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -14,7 +16,7 @@ trait ContainerAwareTrait
     /**
      * @required
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null)
     {
         $this->container = $container;
     }

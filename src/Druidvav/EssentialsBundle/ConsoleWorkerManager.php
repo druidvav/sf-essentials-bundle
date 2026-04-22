@@ -1,5 +1,7 @@
 <?php
+
 /** @noinspection PhpComposerExtensionStubsInspection */
+
 namespace Druidvav\EssentialsBundle;
 
 use Exception;
@@ -37,16 +39,16 @@ class ConsoleWorkerManager
 
     public function killHanged()
     {
-        $this->logger->info("Killing old possible hanged processes...");
+        $this->logger->info('Killing old possible hanged processes...');
         foreach ($this->workers as $worker) {
-            system('pkill -9 -f ' . escapeshellarg($worker['command']));
+            system('pkill -9 -f '.escapeshellarg($worker['command']));
         }
-        $this->logger->info("Killing finished!");
+        $this->logger->info('Killing finished!');
     }
 
     public function start()
     {
-        $this->logger->info('Started with pid=' . getmypid());
+        $this->logger->info('Started with pid='.getmypid());
         if (!function_exists('pcntl_signal')) {
             throw new Exception('ext-pcntl is required for that');
         }
@@ -61,22 +63,22 @@ class ConsoleWorkerManager
             $this->shutdown();
         });
 
-        $this->logger->info("Starting worker processes...");
-        $this->processes = [ ];
+        $this->logger->info('Starting worker processes...');
+        $this->processes = [];
         foreach ($this->workers as $worker) {
-            for ($wi = 1; $wi <= $worker['count']; $wi++) {
-                $pi = sizeof($this->processes);
+            for ($wi = 1; $wi <= $worker['count']; ++$wi) {
+                $pi = count($this->processes);
                 $this->processes[$pi] = [
                     'title' => "Worker #$wi for {$worker['command']}",
-                    'command' => 'exec ' . $this->console . ' ' . $worker['command'] . ' -e ' . $this->env,
+                    'command' => 'exec '.$this->console.' '.$worker['command'].' -e '.$this->env,
                     'process' => null,
-                    'retryCount' => 0
+                    'retryCount' => 0,
                 ];
                 $this->startProcess($pi);
                 sleep(1);
             }
         }
-        $this->logger->info("Starting finished!");
+        $this->logger->info('Starting finished!');
 
         $this->running();
     }
@@ -90,13 +92,13 @@ class ConsoleWorkerManager
                 if (!$process->isRunning()) {
                     $this->logger->info("Looks like '{$worker['title']}' process is down...");
                     if ($worker['retryCount'] > 5) {
-                        $this->logger->critical('Retry count exceeded for worker ' . $pi, [
-                            'output' => $process->getOutput()
+                        $this->logger->critical('Retry count exceeded for worker '.$pi, [
+                            'output' => $process->getOutput(),
                         ]);
                         $this->shutdown();
                     } else {
                         $this->startProcess($pi);
-                        $worker['retryCount']++;
+                        ++$worker['retryCount'];
                     }
                 } else {
                     $worker['retryCount'] = 0;

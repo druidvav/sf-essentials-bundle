@@ -1,8 +1,9 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\EventListener;
 
-use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\Console\Event\ConsoleEvent;
 
 class ConsoleErrorListener
@@ -21,7 +22,7 @@ class ConsoleErrorListener
         $this->logger->error('Error thrown while running command "{command}". Message: "{message}"', [
             'exception' => $exception,
             'message' => $exception->getMessage(),
-            'command' => $this->getInputString($event)
+            'command' => $this->getInputString($event),
         ]);
         $event->stopPropagation();
     }

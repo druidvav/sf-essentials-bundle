@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -11,11 +12,8 @@ class Bootstrap5FormExtension extends AbstractExtension
     private int $widgetCol = 10;
     private int $labelCol = 2;
 
-    private array $settingsStack = [ ];
+    private array $settingsStack = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return array(
@@ -80,13 +78,13 @@ class Bootstrap5FormExtension extends AbstractExtension
     public function backupFormSettings()
     {
         $settings = array(
-            'style'     => $this->style,
-            'colSize'   => $this->colSize,
+            'style' => $this->style,
+            'colSize' => $this->colSize,
             'widgetCol' => $this->widgetCol,
-            'labelCol'  => $this->labelCol,
+            'labelCol' => $this->labelCol,
         );
 
-        array_push($this->settingsStack, $settings);
+        $this->settingsStack[] = $settings;
     }
 
     public function restoreFormSettings()
@@ -97,9 +95,9 @@ class Bootstrap5FormExtension extends AbstractExtension
 
         $settings = array_pop($this->settingsStack);
 
-        $this->style     = $settings['style'];
-        $this->colSize   = $settings['colSize'];
+        $this->style = $settings['style'];
+        $this->colSize = $settings['colSize'];
         $this->widgetCol = $settings['widgetCol'];
-        $this->labelCol  = $settings['labelCol'];
+        $this->labelCol = $settings['labelCol'];
     }
 }

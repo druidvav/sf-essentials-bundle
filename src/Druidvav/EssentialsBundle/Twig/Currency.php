@@ -31,13 +31,11 @@ class Currency extends AbstractExtension
     }
 
     /**
-     * @param string $currencyCode
-     * @param string|null $locale
      * @return bool|string
      */
     public function currencySymbolFilter(string $currencyCode, ?string $locale = null)
     {
-        if ($locale === null) {
+        if (null === $locale) {
             $locale = Locale::getDefault();
         }
         $formatter = new NumberFormatter($locale.'@currency='.$currencyCode, NumberFormatter::CURRENCY);
@@ -52,7 +50,7 @@ class Currency extends AbstractExtension
         $result = [];
         $var = abs($intPart);
 
-        for ($i = 1; $var > 0; $i++) {
+        for ($i = 1; $var > 0; ++$i) {
             $result[] = $var % 1000;
             $var = floor($var / 1000);
         }
@@ -63,14 +61,14 @@ class Currency extends AbstractExtension
             $strResult .= $this->translator->trans('number.minus', [], 'numbers').' ';
         }
 
-        for ($i = count($result) - 1; $i >= 0; $i--) {
-            $strResult .= $this->toWords($result[$i], $i === 1);
-            if ($i !== 0) {
+        for ($i = count($result) - 1; $i >= 0; --$i) {
+            $strResult .= $this->toWords($result[$i], 1 === $i);
+            if (0 !== $i) {
                 $strResult .= ' '.$this->translator->trans('number.unit.'.pow(1000, $i), ['%count%' => $result[$i]], 'numbers');
             }
         }
 
-        if ($intPart !== 0) {
+        if (0 !== $intPart) {
             $strResult .= ' '.$this->translator->trans('number.unit.currency', ['%count%' => abs($intPart)], 'numbers');
         }
 
@@ -103,6 +101,7 @@ class Currency extends AbstractExtension
         } else {
             $value = $default;
         }
+
         return $value;
     }
 
@@ -111,6 +110,7 @@ class Currency extends AbstractExtension
         if (!$sum) {
             return '-';
         }
+
         return number_format($sum, 2, '.', '');
     }
 
@@ -122,6 +122,7 @@ class Currency extends AbstractExtension
         if ($date instanceof DateTime) {
             return $date->format('d.m.Y');
         }
+
         return (new DateTime($date))->format('d.m.Y');
     }
 
@@ -133,7 +134,7 @@ class Currency extends AbstractExtension
     private function toWords($number, bool $isOther = false): string
     {
         $result = '';
-        if ($number != 0) {
+        if (0 != $number) {
             $transId = "number.$number";
             if ($isOther && $number < 3) {
                 $transId .= '_other';

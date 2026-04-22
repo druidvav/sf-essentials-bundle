@@ -1,4 +1,5 @@
 <?php
+
 namespace Druidvav\EssentialsBundle\Doctrine\ORM\Query\AST\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
@@ -12,7 +13,7 @@ class Date extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker): string
     {
-        return 'DATE(' . $sqlWalker->walkArithmeticPrimary($this->date) . ')';
+        return 'DATE('.$sqlWalker->walkArithmeticPrimary($this->date).')';
     }
 
     public function parse(Parser $parser): void

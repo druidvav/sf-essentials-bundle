@@ -17,12 +17,17 @@ abstract class ContainerService implements ContainerInterface
         }
     }
 
-    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
+    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
         return $this->container->get($id, $invalidBehavior);
     }
 
     public function set($id, $service)
+    {
+        throw new LogicException('Not available here');
+    }
+
+    public function setParameter($name, $value): void
     {
         throw new LogicException('Not available here');
     }
@@ -37,6 +42,11 @@ abstract class ContainerService implements ContainerInterface
         return $this->container->initialized($id);
     }
 
+    /**
+     * PHP 7.4 совместимость: union-тип появится в интерфейсе только на PHP 8+.
+     *
+     * @return array|bool|string|int|float|\UnitEnum|null
+     */
     public function getParameter($name)
     {
         return $this->container->getParameter($name);
@@ -45,10 +55,5 @@ abstract class ContainerService implements ContainerInterface
     public function hasParameter($name): bool
     {
         return $this->container->hasParameter($name);
-    }
-
-    public function setParameter($name, $value)
-    {
-        throw new LogicException('Not available here');
     }
 }

@@ -24,7 +24,7 @@ abstract class Command extends BaseCommand implements ContainerInterface
     use ContainerServiceTrait;
     use LoggerAwareTrait;
 
-    public function get($id, $invalidBehavior = ContainerService::EXCEPTION_ON_INVALID_REFERENCE)
+    public function get($id, $invalidBehavior = ContainerService::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
         return $this->container->get($id, $invalidBehavior);
     }
@@ -34,22 +34,27 @@ abstract class Command extends BaseCommand implements ContainerInterface
         throw new LogicException('Not available here');
     }
 
-    public function has($id)
+    public function has($id): bool
     {
         return $this->container->has($id);
     }
 
-    public function initialized($id)
+    public function initialized($id): bool
     {
         return $this->container->initialized($id);
     }
 
+    /**
+     * PHP 7.4 совместимость: union-тип появится в интерфейсе только на PHP 8+.
+     *
+     * @return array|bool|string|int|float|\UnitEnum|null
+     */
     public function getParameter($name)
     {
         return $this->container->getParameter($name);
     }
 
-    public function hasParameter($name)
+    public function hasParameter($name): bool
     {
         return $this->container->hasParameter($name);
     }

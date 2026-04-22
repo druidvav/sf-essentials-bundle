@@ -4,12 +4,15 @@
 
 namespace Druidvav\EssentialsBundle;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 trait ContainerAwareTrait
 {
     /**
-     * @var ContainerInterface
+     * Реально сюда внедряется Symfony-контейнер, но для autowiring используем PSR интерфейс
+     * (иначе Symfony 5.1+ ругается на deprecated alias).
+     *
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface|null
      */
     protected $container;
 

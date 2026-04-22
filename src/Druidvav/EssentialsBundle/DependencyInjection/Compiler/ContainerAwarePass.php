@@ -28,11 +28,24 @@ class ContainerAwarePass implements CompilerPassInterface
             return;
         }
 
-        $traits = class_uses($class, true);
+        $traits = $this->getTraits($class);
         if (!isset($traits[ContainerAwareTrait::class])) {
             return;
         }
 
         $definition->addMethodCall('setContainer', [new Reference('service_container')]);
+    }
+
+    private function getTraits(string $class): array
+    {
+        $traits = [];
+        do {
+            $traits = array_merge(class_uses($class), $traits);
+        } while ($class = get_parent_class($class));
+        foreach ($traits as $trait) {
+            $traits = array_merge(class_uses($trait), $traits);
+        }
+
+        return array_unique($traits);
     }
 }

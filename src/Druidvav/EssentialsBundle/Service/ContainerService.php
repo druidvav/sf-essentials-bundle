@@ -10,13 +10,6 @@ abstract class ContainerService implements ContainerInterface
 {
     use ContainerServiceTrait;
 
-    public function __construct(?ContainerInterface $container = null)
-    {
-        if (null !== $container) {
-            $this->container = $container;
-        }
-    }
-
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
         return $this->container->get($id, $invalidBehavior);

@@ -3,7 +3,6 @@
 namespace Druidvav\EssentialsBundle\Service\ContainerService;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use LogicException;
@@ -27,14 +26,10 @@ trait ContainerServiceTrait
             throw new LogicException('The DoctrineBundle is not registered in your application.');
         }
 
-        /* @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->container->get('doctrine');
     }
 
-    /**
-     * @return ObjectManager|EntityManager|object
-     */
-    protected function getEm()
+    protected function getEm(): ObjectManager
     {
         return $this->getDoctrine()->getManager();
     }

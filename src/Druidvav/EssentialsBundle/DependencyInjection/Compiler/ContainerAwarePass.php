@@ -29,7 +29,7 @@ class ContainerAwarePass implements CompilerPassInterface
         }
 
         $traits = $this->getTraits($class);
-        if (!isset($traits[ContainerAwareTrait::class])) {
+        if (!isset($traits[ContainerAwareTrait::class]) && !isset($traits[\Symfony\Component\DependencyInjection\ContainerAwareTrait::class])) {
             return;
         }
 

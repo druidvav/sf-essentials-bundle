@@ -2,6 +2,7 @@
 
 namespace Druidvav\EssentialsBundle\Service;
 
+use Druidvav\EssentialsBundle\DoctrineAwareTrait;
 use Druidvav\EssentialsBundle\Service\ContainerService\ContainerServiceTrait;
 use LogicException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -9,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class ContainerService implements ContainerInterface
 {
     use ContainerServiceTrait;
+    use DoctrineAwareTrait;
 
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {

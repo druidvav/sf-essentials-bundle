@@ -19,18 +19,4 @@ trait ContainerServiceTrait
     {
         return $this->container;
     }
-
-    public function getDoctrine(): Registry
-    {
-        if (!$this->container->has('doctrine')) {
-            throw new LogicException('The DoctrineBundle is not registered in your application.');
-        }
-
-        return $this->container->get('doctrine');
-    }
-
-    protected function getEm(): ObjectManager
-    {
-        return $this->getDoctrine()->getManager();
-    }
 }

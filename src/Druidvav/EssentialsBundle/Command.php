@@ -23,6 +23,7 @@ abstract class Command extends BaseCommand implements ContainerInterface
 {
     use ContainerServiceTrait;
     use LoggerAwareTrait;
+    use DoctrineAwareTrait;
 
     public function get($id, $invalidBehavior = ContainerService::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {

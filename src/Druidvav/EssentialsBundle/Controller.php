@@ -2,7 +2,6 @@
 
 namespace Druidvav\EssentialsBundle;
 
-use Doctrine\ORM\EntityManager;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -10,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class Controller extends BaseController
 {
     use LoggerAwareTrait;
+    use DoctrineAwareTrait;
 
     protected function getContainer(): ContainerInterface
     {
@@ -23,13 +23,5 @@ abstract class Controller extends BaseController
         }
 
         return $this->get('session')->getFlashBag()->get($type);
-    }
-
-    /**
-     * @return EntityManager|object
-     */
-    protected function getEm()
-    {
-        return $this->getDoctrine()->getManager();
     }
 }

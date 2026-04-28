@@ -24,7 +24,17 @@ class ContainerAwarePass implements CompilerPassInterface
         }
 
         $class = $definition->getClass();
-        if (!$class || !class_exists($class)) {
+        if (!$class) {
+            return;
+        }
+
+        try {
+            $reflection = new \ReflectionClass($class);
+        } catch (\Throwable $e) {
+            return;
+        }
+
+        if (!$reflection->isInstantiable() && !$reflection->isTrait()) {
             return;
         }
 

@@ -10,14 +10,14 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ContainerAwarePass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $definition) {
             $this->processDefinition($container, $definition);
         }
     }
 
-    private function processDefinition(ContainerBuilder $container, Definition $definition)
+    private function processDefinition(ContainerBuilder $container, Definition $definition): void
     {
         if ($definition->isAbstract() || $definition->isSynthetic()) {
             return;

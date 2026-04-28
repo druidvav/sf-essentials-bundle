@@ -19,6 +19,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Process;
 
+/**
+ * @deprecated Use your own base controller and inject the services you need instead.
+ *             This class will be removed in final version 3.0 of this bundle.
+ */
 abstract class Command extends BaseCommand implements ContainerInterface
 {
     use ContainerServiceTrait;
@@ -30,7 +34,7 @@ abstract class Command extends BaseCommand implements ContainerInterface
         return $this->container->get($id, $invalidBehavior);
     }
 
-    public function set($id, $service)
+    public function set($id, $service): void
     {
         throw new LogicException('Not available here');
     }
@@ -60,7 +64,7 @@ abstract class Command extends BaseCommand implements ContainerInterface
         return $this->container->hasParameter($name);
     }
 
-    public function setParameter($name, $value)
+    public function setParameter($name, $value): void
     {
         throw new LogicException('Not available here');
     }

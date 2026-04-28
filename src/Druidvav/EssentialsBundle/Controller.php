@@ -6,6 +6,10 @@ use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @deprecated Use your own base controller and inject the services you need instead.
+ *             This class will be removed in final version 3.0 of this bundle.
+ */
 abstract class Controller extends BaseController
 {
     use LoggerAwareTrait;

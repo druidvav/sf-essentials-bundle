@@ -30,10 +30,10 @@ class Translit
      * @param string $string        строка для преобразования
      * @param int    $allow_slashes разрешены ли слеши
      */
-    public static function url($string, $allow_slashes = self::TR_NO_SLASHES): string
+    public static function url(string $string, int $allow_slashes = self::TR_NO_SLASHES): string
     {
-        $string = preg_replace("#([^\s]+)\'#usi", '\1', $string);
-        $string = preg_replace('#[\s+\-\:\;\'\"]#usi', ' ', $string);
+        $string = preg_replace("#(\S+)'#usi", '\1', $string);
+        $string = preg_replace('#[\s+\-:;\'"]#usi', ' ', $string);
 
         $slash = '';
         if ($allow_slashes) {
@@ -49,7 +49,7 @@ class Translit
             'ш' => 'sh', 'щ' => 'sch', 'ю' => 'yu', 'я' => 'ya',
         );
 
-        $string = preg_replace('/[_\s\.,?!\[\](){}]+/', '-', $string);
+        $string = preg_replace('/[_\s.,?!\[\](){}]+/', '-', $string);
         $string = preg_replace('/-{2,}/', '--', $string);
         $string = preg_replace('/_-+_/', '--', $string);
         $string = preg_replace('/[_\-]+$/', '', $string);
@@ -57,8 +57,8 @@ class Translit
         $string = mb_strtolower($string, 'UTF-8');
 
         // here we replace ъ/ь
-        $string = preg_replace('/(ь|ъ)(['.$Vowel.'])/', 'j\\2', $string);
-        $string = preg_replace('/(ь|ъ)/', '', $string);
+        $string = preg_replace('/([ьъ])(['.$Vowel.'])/', 'j\\2', $string);
+        $string = preg_replace('/([ьъ])/', '', $string);
 
         // transliterating
         $string = str_replace(explode(' ', $LettersFrom), explode(' ', $LettersTo), $string);
@@ -69,7 +69,7 @@ class Translit
 
         $string = preg_replace('/^[_\-]+/', '', $string);
         $string = preg_replace('/[_\-]+$/', '', $string);
-        $string = preg_replace('/[\_\-]+$/', '-', $string);
+        $string = preg_replace('/[_\-]+$/', '-', $string);
 
         return $string;
     }

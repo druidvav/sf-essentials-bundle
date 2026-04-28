@@ -4,13 +4,11 @@ parameters:
 services:
   essentials.listener.command_exception:
     class: Druidvav\EssentialsBundle\EventListener\ConsoleErrorListener
-    arguments: ['@logger']
     tags:
       - { name: kernel.event_listener, event: console.error }
   Druidvav\EssentialsBundle\Twig\Basic:
     calls:
       - [ setTranslator, [ "@translator" ] ]
-      - [ setKernel, [ "@kernel" ] ]
       - [ setGruntAssetManifestPath, [ "%dv_essentials.grunt_asset_manifest_path%" ] ]
     tags: [ "twig.extension" ]
   Druidvav\EssentialsBundle\Twig\Currency:

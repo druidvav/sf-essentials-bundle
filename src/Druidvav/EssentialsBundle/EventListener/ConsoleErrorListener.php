@@ -2,18 +2,13 @@
 
 namespace Druidvav\EssentialsBundle\EventListener;
 
-use Psr\Log\LoggerInterface;
+use Druidvav\EssentialsBundle\LoggerAwareTrait;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\Console\Event\ConsoleEvent;
 
 class ConsoleErrorListener
 {
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
+    use LoggerAwareTrait;
 
     public function onConsoleError(ConsoleErrorEvent $event)
     {
@@ -27,7 +22,7 @@ class ConsoleErrorListener
         $event->stopPropagation();
     }
 
-    private static function getInputString(ConsoleEvent $event)
+    private static function getInputString(ConsoleEvent $event): string
     {
         $commandName = $event->getCommand() ? $event->getCommand()->getName() : null;
         $input = $event->getInput();

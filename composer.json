@@ -14,17 +14,17 @@
     "ext-simplexml": "*",
     "ext-json": "*",
     "symfony/contracts": "^1.1|^2.0|^3.0",
-    "symfony/dependency-injection": "^5.4",
-    "symfony/translation": "^5.4",
-    "symfony/framework-bundle": "^5.4",
-    "symfony/twig-bundle": "^5.4"
+    "symfony/dependency-injection": "^5.4 | ^6.4",
+    "symfony/translation": "^5.4 | ^6.4",
+    "symfony/framework-bundle": "^5.4 | ^6.4",
+    "symfony/twig-bundle": "^5.4 | ^6.4"
   },
   "suggest": {
     "ext-pcntl": "Required to use some cool doctrine feature with my lib."
   },
   "require-dev": {
-    "symfony/process": "^5.4",
-    "symfony/console": "^5.4",
+    "symfony/process": "^5.4 | ^6.4",
+    "symfony/console": "^5.4 | ^6.4",
     "doctrine/doctrine-bundle": "^2.0",
     "doctrine/orm": "~2.4,>=2.4.5"
   },

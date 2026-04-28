@@ -4,7 +4,6 @@ namespace Druidvav\EssentialsBundle\Twig;
 
 use DateTime;
 use IntlDateFormatter;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -13,7 +12,6 @@ use Twig\TwigFunction;
 class Basic extends AbstractExtension
 {
     protected TranslatorInterface $translator;
-    protected $kernel;
     protected string $gruntAssetManifestPath = '';
 
     public function setTranslator(TranslatorInterface $translator)
@@ -26,15 +24,6 @@ class Basic extends AbstractExtension
         return $this->translator;
     }
 
-    public function getKernel(): Kernel
-    {
-        return $this->kernel;
-    }
-
-    public function setKernel(Kernel $kernel)
-    {
-        $this->kernel = $kernel;
-    }
 
     public function getGruntAssetManifestPath(): string
     {

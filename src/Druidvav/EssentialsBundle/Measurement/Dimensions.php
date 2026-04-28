@@ -83,57 +83,57 @@ class Dimensions
         return $this->system;
     }
 
-    public function getMmX()
+    public function getMmX(): int
     {
         return (int) $this->x;
     }
 
-    public function getCmX()
+    public function getCmX(): float
     {
         return round($this->x / 10, 1);
     }
 
-    public function getLocalX()
+    public function getLocalX(): float
     {
         return round($this->x / $this->k, 1);
     }
 
-    public function getMmY()
+    public function getMmY(): int
     {
         return (int) $this->y;
     }
 
-    public function getCmY()
+    public function getCmY(): float
     {
         return round($this->y / 10, 1);
     }
 
-    public function getLocalY()
+    public function getLocalY(): float
     {
         return round($this->y / $this->k, 1);
     }
 
-    public function getMmZ()
+    public function getMmZ(): int
     {
         return (int) $this->z;
     }
 
-    public function getCmZ()
+    public function getCmZ(): float
     {
         return round($this->z / 10, 1);
     }
 
-    public function getLocalZ()
+    public function getLocalZ(): float
     {
         return round($this->z / $this->k, 1);
     }
 
-    public function getMaxLengthMm()
+    public function getMaxLengthMm(): int
     {
         return max($this->getMmX(), $this->getMmY(), $this->getMmZ());
     }
 
-    public function getSumLengthMm()
+    public function getSumLengthMm(): int
     {
         return $this->getMmX() + $this->getMmY() + $this->getMmZ();
     }

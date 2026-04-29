@@ -2,7 +2,6 @@
 
 namespace Druidvav\EssentialsBundle\DependencyInjection;
 
-use Druidvav\EssentialsBundle\EventListener\ConsoleErrorListener;
 use Druidvav\EssentialsBundle\Twig\Autolink;
 use Druidvav\EssentialsBundle\Twig\Basic;
 use Druidvav\EssentialsBundle\Twig\Bootstrap5FormExtension;
@@ -16,12 +15,6 @@ class DvEssentialsExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $container->setParameter('dv_essentials.grunt_asset_manifest_path', '%kernel.project_dir%/config/assets.json');
-
-        $container
-            ->register('essentials.listener.command_exception', ConsoleErrorListener::class)
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            ->addTag('kernel.event_listener', ['event' => 'console.error']);
 
         $container
             ->register(Basic::class)

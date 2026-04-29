@@ -14,20 +14,12 @@ class Basic extends AbstractExtension
     protected TranslatorInterface $translator;
     protected string $gruntAssetManifestPath = '';
 
+    /**
+     * @required
+     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-    }
-
-    public function getTranslator(): TranslatorInterface
-    {
-        return $this->translator;
-    }
-
-
-    public function getGruntAssetManifestPath(): string
-    {
-        return $this->gruntAssetManifestPath;
     }
 
     public function setGruntAssetManifestPath(string $gruntAssetManifestPath)
@@ -55,7 +47,7 @@ class Basic extends AbstractExtension
         );
     }
 
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->translator->getLocale();
     }
@@ -79,11 +71,11 @@ class Basic extends AbstractExtension
         if (abs($diff) <= 3600) {
             $diffInt = ceil(abs($diff) / 60);
 
-            return $this->getTranslator()->trans('diff.'.$direction.'.minute', ['%count%' => $diffInt], 'date');
+            return $this->translator->trans('diff.'.$direction.'.minute', ['%count%' => $diffInt], 'date');
         } elseif (abs($diff) <= 36 * 3600) {
             $diffInt = ceil(abs($diff) / 3600);
 
-            return $this->getTranslator()->trans('diff.'.$direction.'.hour', ['%count%' => $diffInt], 'date');
+            return $this->translator->trans('diff.'.$direction.'.hour', ['%count%' => $diffInt], 'date');
         }
 
         return $this->formatDateSmart($date, $format);
@@ -95,7 +87,7 @@ class Basic extends AbstractExtension
             $date = new DateTime($date);
         }
 
-        $locale = $this->getTranslator()->getLocale();
+        $locale = $this->translator->getLocale();
         $currentYear = $date->format('Y') == date('Y');
         $dateMode = 'long' == $format || $currentYear ? IntlDateFormatter::LONG : IntlDateFormatter::MEDIUM;
         $formatter = IntlDateFormatter::create($locale, $dateMode, IntlDateFormatter::NONE);
@@ -119,7 +111,7 @@ class Basic extends AbstractExtension
             $date = new DateTime($date);
         }
 
-        $locale = $this->getTranslator()->getLocale();
+        $locale = $this->translator->getLocale();
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
         $formatter->setPattern($pattern);
         $formatter->setTimeZone($date->getTimezone());
@@ -134,7 +126,7 @@ class Basic extends AbstractExtension
 
     public function gruntAsset($string): string
     {
-        $assetsFilename = $this->getGruntAssetManifestPath();
+        $assetsFilename = $this->gruntAssetManifestPath;
         if (file_exists($assetsFilename)) {
             $data = file_get_contents($assetsFilename);
             if (empty($data)) {

@@ -13,6 +13,9 @@ class Currency extends AbstractExtension
 {
     private TranslatorInterface $translator;
 
+    /**
+     * @required
+     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;

@@ -2,8 +2,9 @@
 
 namespace Druidvav\EssentialsBundle;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Symfony\Contracts\Service\Attribute\Required;
 
 trait DoctrineAwareTrait
@@ -18,8 +19,17 @@ trait DoctrineAwareTrait
         return $this->doctrine;
     }
 
-    protected function getEm(): ObjectManager
+    protected function getConnection(): Connection
     {
-        return $this->doctrine->getManager();
+        return $this->getEm()->getConnection();
+    }
+
+    protected function getEm(): EntityManagerInterface
+    {
+        $manager = $this->doctrine->getManager();
+        if (!$manager instanceof EntityManagerInterface) {
+            throw new \RuntimeException('The manager is not an instance of EntityManagerInterface.');
+        }
+        return $manager;
     }
 }

@@ -17,7 +17,7 @@ abstract class ContainerService implements ContainerInterface
         return $this->container->get($id, $invalidBehavior);
     }
 
-    public function set($id, $service)
+    public function set($id, $service): void
     {
         throw new LogicException('Not available here');
     }

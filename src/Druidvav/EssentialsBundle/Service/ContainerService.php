@@ -2,15 +2,23 @@
 
 namespace Druidvav\EssentialsBundle\Service;
 
+use Druidvav\EssentialsBundle\ContainerAwareTrait;
 use Druidvav\EssentialsBundle\DoctrineAwareTrait;
-use Druidvav\EssentialsBundle\Service\ContainerService\ContainerServiceTrait;
 use LogicException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @deprecated Will be removed in 4.0. Use dependency injection instead.
+ */
 abstract class ContainerService implements ContainerInterface
 {
-    use ContainerServiceTrait;
     use DoctrineAwareTrait;
+    use ContainerAwareTrait;
+
+    public function getContainer(): ?ContainerInterface
+    {
+        return $this->container;
+    }
 
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {

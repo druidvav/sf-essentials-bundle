@@ -12,6 +12,7 @@ trait DoctrineAwareTrait
     /**
      * @Required
      */
+    #[Required]
     public ManagerRegistry $doctrine;
 
     protected function getDoctrine(): ManagerRegistry

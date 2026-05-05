@@ -3,23 +3,15 @@
 namespace Druidvav\EssentialsBundle\Twig;
 
 use DateTime;
+use Druidvav\EssentialsBundle\TranslatorAwareTrait;
 use Locale;
 use NumberFormatter;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class Currency extends AbstractExtension
 {
-    private TranslatorInterface $translator;
-
-    /**
-     * @required
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
+    use TranslatorAwareTrait;
 
     public function getFilters(): array
     {

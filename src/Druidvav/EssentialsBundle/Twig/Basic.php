@@ -3,24 +3,17 @@
 namespace Druidvav\EssentialsBundle\Twig;
 
 use DateTime;
+use Druidvav\EssentialsBundle\TranslatorAwareTrait;
 use IntlDateFormatter;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class Basic extends AbstractExtension
 {
-    protected TranslatorInterface $translator;
     protected string $gruntAssetManifestPath = '';
 
-    /**
-     * @required
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
+    use TranslatorAwareTrait;
 
     public function setGruntAssetManifestPath(string $gruntAssetManifestPath)
     {

@@ -11,6 +11,7 @@ trait RequestStackAwareTrait
     /**
      * @Required
      */
+    #[Required]
     public RequestStack $requestStack;
 
     public function getRequest(): Request

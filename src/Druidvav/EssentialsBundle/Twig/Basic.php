@@ -11,14 +11,7 @@ use Twig\TwigFunction;
 
 class Basic extends AbstractExtension
 {
-    protected string $gruntAssetManifestPath = '';
-
     use TranslatorAwareTrait;
-
-    public function setGruntAssetManifestPath(string $gruntAssetManifestPath)
-    {
-        $this->gruntAssetManifestPath = $gruntAssetManifestPath;
-    }
 
     public function getFilters(): array
     {
@@ -33,7 +26,6 @@ class Basic extends AbstractExtension
     {
         return array(
             new TwigFunction('array_print', array($this, 'arrayPrint')),
-            new TwigFunction('grunt_asset', array($this, 'gruntAsset')),
             new TwigFunction('cdn_asset', array($this, 'cdnAsset')),
             new TwigFunction('get_locale', array($this, 'getLocale')),
             new TwigFunction('is_locale', array($this, 'isLocale')),
@@ -115,27 +107,5 @@ class Basic extends AbstractExtension
     public function arrayPrint($string)
     {
         return print_r($string, true);
-    }
-
-    public function gruntAsset($string): string
-    {
-        $assetsFilename = $this->gruntAssetManifestPath;
-        if (file_exists($assetsFilename)) {
-            $data = file_get_contents($assetsFilename);
-            if (empty($data)) {
-                return '/'.$string;
-            }
-            $assets = json_decode($data, true);
-            if (empty($assets)) {
-                return '/'.$string;
-            }
-            foreach ($assets as $asset) {
-                if ($asset['originalPath'] == $string) {
-                    return '/'.$asset['versionedPath'];
-                }
-            }
-        }
-
-        return '/'.$string;
     }
 }

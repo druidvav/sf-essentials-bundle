@@ -9,7 +9,7 @@ use Druidvav\EssentialsBundle\Twig\Currency;
 use Druidvav\EssentialsBundle\Twig\Grunt;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DvEssentialsExtension extends Extension
 {

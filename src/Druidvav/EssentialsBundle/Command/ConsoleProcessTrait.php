@@ -17,20 +17,40 @@ trait ConsoleProcessTrait
 {
     use LoggerAwareTrait;
 
-//    abstract private function getApplication(): ?Application;
+    //    abstract private function getApplication(): ?Application;
 
     protected function checkRunning($command): void
     {
-        $process = Process::fromShellCommandline('ps auxww | grep "console '.$command.' " | grep -v grep | grep -v "\/bin\/sh" | wc -l');
-        $process->start();
-        /** @noinspection PhpStatementHasEmptyBodyInspection */
-        while ($process->isRunning()) {
-            // waiting for process to finish
-        }
-        if ((int) $process->getOutput() > 1) {
+        $process = new Process(['ps', '-axo', 'args=']);
+        $process->run();
+
+        if ($this->countRunningConsoleProcesses($process->getOutput(), $command) > 1) {
             $this->logger->info($command.' is already running');
             exit;
         }
+    }
+
+    private function countRunningConsoleProcesses(string $processList, string $command): int
+    {
+        $count = 0;
+        $commandPattern = '~(?:^|\s)(?:\S*/)?console\s+'.preg_quote($command, '~').'(?=\s|$)~';
+
+        foreach (preg_split('/\R/', $processList) as $line) {
+            if (!preg_match('/^\s*(\S+)(?:\s|$)/', $line, $matches)) {
+                continue;
+            }
+
+            $executable = basename($matches[1]);
+            if (!preg_match('/^php(?:@?\d+(?:\.\d+)*)?$/i', $executable)) {
+                continue;
+            }
+
+            if (preg_match($commandPattern, $line)) {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 
     /**
@@ -44,5 +64,4 @@ trait ConsoleProcessTrait
         $command->run(new ArrayInput([]), $output);
         $log->info('Finished '.$task.'!');
     }
-
 }
